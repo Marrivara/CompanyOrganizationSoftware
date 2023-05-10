@@ -1,14 +1,17 @@
 import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 
-function LoginPage() {
+function ActivateAccount() {
+
+    const [submitted, setSubmitted] = useState(false)
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
             email: data.get("email"),
-            password: data.get("password"),
         });
+        setSubmitted(true)
     }
 
     return (
@@ -33,38 +36,37 @@ function LoginPage() {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h2" >Sign In</Typography>
+                    <Typography variant="h3" >Activate Account</Typography>
                 </Box>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
+                >
                     <TextField
                         margin="normal"
                         color="primary"
                         required
-                        fullWidth
+
                         autoFocus
                         id="email"
                         label="Email Address"
                         name="email"
-
-
-                    />
-                    <TextField
-                        margin="normal"
-                        color="primary"
-                        id="password"
-                        label="Password"
-                        name="password"
-                        required
                         fullWidth
+
+
                     />
+
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        SIGN IN
+                        Activate User
                     </Button>
-                    <Stack direction={"row"} justifyContent={"space-between"} mt={2}>
-                        <Link href="/ForgotPassword" variant="body2">Forgot Password?</Link>
-                        <Link href="/ActivateAccount" variant="body2">Activate Account</Link>
-                    </Stack>
+                    {submitted && <Typography variant="h6" sx={{ mt: 1 }}>An activation link has been sent</Typography>}
+
+                    <Typography variant="body2" mt={1}>
+                        Already have an account?{' '}
+                        <Link href="/">
+                            Sign in
+                        </Link>
+                    </Typography>
+
                 </Box>
             </Box>
 
@@ -73,4 +75,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default ActivateAccount;

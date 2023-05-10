@@ -1,14 +1,19 @@
 import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function LoginPage() {
+
+function SetNewPassword() {
+
+    const navigate = useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
-            email: data.get("email"),
             password: data.get("password"),
         });
+        navigate("/")
+
     }
 
     return (
@@ -33,38 +38,31 @@ function LoginPage() {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h2" >Sign In</Typography>
+                    <Typography variant="h3" >Set New Password</Typography>
                 </Box>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
+                >
                     <TextField
                         margin="normal"
                         color="primary"
                         required
-                        fullWidth
+
                         autoFocus
-                        id="email"
-                        label="Email Address"
-                        name="email"
-
-
-                    />
-                    <TextField
-                        margin="normal"
-                        color="primary"
                         id="password"
                         label="Password"
                         name="password"
-                        required
                         fullWidth
+
+
                     />
 
+
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        SIGN IN
+                        Set New Password
                     </Button>
-                    <Stack direction={"row"} justifyContent={"space-between"} mt={2}>
-                        <Link href="/ForgotPassword" variant="body2">Forgot Password?</Link>
-                        <Link href="/ActivateAccount" variant="body2">Activate Account</Link>
-                    </Stack>
+
+                    
+
                 </Box>
             </Box>
 
@@ -73,4 +71,4 @@ function LoginPage() {
     );
 }
 
-export default LoginPage;
+export default SetNewPassword;
