@@ -48,7 +48,6 @@ function ActivateAccount() {
                         margin="normal"
                         color="primary"
                         required
-
                         autoFocus
                         id="email"
                         label={language.email}

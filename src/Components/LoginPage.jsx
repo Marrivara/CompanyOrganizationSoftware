@@ -1,7 +1,7 @@
 import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { LanguageContext } from "./Pages";
-import { tr, en } from "./languages";
+
 
 
 
@@ -18,12 +18,6 @@ function LoginPage() {
             password: data.get("password"),
         });
     }
-
-    useEffect(() => {
-        console.log(language)
-        console.log(tr.activationLinkSent)
-        console.log(LanguageContext)
-    })
 
     return (
 
@@ -57,7 +51,7 @@ function LoginPage() {
                         fullWidth
                         autoFocus
                         id="email"
-                        label="email"
+                        label={language.email}
                         name="email"
 
 
@@ -66,7 +60,7 @@ function LoginPage() {
                         margin="normal"
                         color="primary"
                         id="password"
-                        
+                        label={language.password}
                         name="password"
                         required
                         type="password"
@@ -74,11 +68,11 @@ function LoginPage() {
                     />
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        
+                        {language.signIn}
                     </Button>
                     <Stack direction={"row"} justifyContent={"space-between"} mt={2}>
-                        <Link href="/ForgotPassword" variant="body2"></Link>
-                        <Link href="/ActivateAccount" variant="body2"></Link>
+                        <Link href="/ForgotPassword" variant="body2">{language.forgotPassword}</Link>
+                        <Link href="/ActivateAccount" variant="body2">{language.activateAccount}</Link>
                     </Stack>
                 </Box>
             </Box>
