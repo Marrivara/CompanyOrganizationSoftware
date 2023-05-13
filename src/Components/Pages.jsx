@@ -5,7 +5,7 @@ import ActivateAccount from "./ActivateAccount";
 import SetNewPassword from "./SetNewPassword";
 import { tr, en } from "./languages";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { GB, TR } from 'country-flag-icons/react/3x2'
 

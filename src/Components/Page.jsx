@@ -1,14 +1,19 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Pages from "./Pages"
 
 function Page() {
 
+    const [firstLoad, setFirstLoad] = useState(false)
+
     useEffect(() => {
-        localStorage.getItem("language") === "en" ? localStorage.setItem("language", 'en') : localStorage.setItem("language", 'tr')
+        const currentLang = localStorage.getItem("language")
+        localStorage.setItem("language", currentLang === "tr" ? "tr" : "en")
+        setFirstLoad(true)
     }, [])
 
-    return (
-        <Pages />
+    return (<>
+        {firstLoad && <Pages/>}
+    </>
     )
 
 }
