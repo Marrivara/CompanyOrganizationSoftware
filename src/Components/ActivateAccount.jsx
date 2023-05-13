@@ -1,7 +1,11 @@
-import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import React from "react";
+import { LanguageContext } from "./Pages";
 
 function ActivateAccount() {
+
+    const language = React.useContext(LanguageContext);
 
     const [submitted, setSubmitted] = useState(false)
 
@@ -36,7 +40,7 @@ function ActivateAccount() {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h3" >Activate Account</Typography>
+                    <Typography variant="h3" >{language.activateAccount}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
@@ -47,7 +51,7 @@ function ActivateAccount() {
 
                         autoFocus
                         id="email"
-                        label="Email Address"
+                        label={language.email}
                         name="email"
                         fullWidth
 
@@ -56,14 +60,14 @@ function ActivateAccount() {
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        Activate User
+                        {language.activateUser}
                     </Button>
-                    {submitted && <Typography variant="h6" sx={{ mt: 1 }}>An activation link has been sent</Typography>}
+                    {submitted && <Typography variant="h6" sx={{ mt: 1 }}>{language.activationLinkSent}</Typography>}
 
                     <Typography variant="body2" mt={1}>
-                        Already have an account?{' '}
+                        {language.alreadyHaveAccount}{' '}
                         <Link href="/">
-                            Sign in
+                            {language.signIn}
                         </Link>
                     </Typography>
 

@@ -1,8 +1,11 @@
-import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import React from "react";
+import { LanguageContext } from "./Pages";
 
 function SetNewPassword() {
+
+    const language = React.useContext(LanguageContext);
 
     const navigate = useNavigate()
 
@@ -38,7 +41,7 @@ function SetNewPassword() {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h3" >Set New Password</Typography>
+                    <Typography variant="h3" >{language.setNewPassword}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
@@ -46,10 +49,10 @@ function SetNewPassword() {
                         margin="normal"
                         color="primary"
                         required
-
+                        type="password"
                         autoFocus
                         id="password"
-                        label="Password"
+                        label={language.password}
                         name="password"
                         fullWidth
 
@@ -58,7 +61,7 @@ function SetNewPassword() {
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        Set New Password
+                        {language.send}
                     </Button>
 
                     

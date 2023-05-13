@@ -1,6 +1,12 @@
 import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
+import React from "react";
+import { LanguageContext } from "./Pages";
+
 
 function LoginPage() {
+
+
+    const language = React.useContext(LanguageContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -33,7 +39,7 @@ function LoginPage() {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h2" >Sign In</Typography>
+                    <Typography variant="h2" >{language.signIn}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     <TextField
@@ -43,7 +49,7 @@ function LoginPage() {
                         fullWidth
                         autoFocus
                         id="email"
-                        label="Email Address"
+                        label={language.email}
                         name="email"
 
 
@@ -52,18 +58,19 @@ function LoginPage() {
                         margin="normal"
                         color="primary"
                         id="password"
-                        label="Password"
+                        label={language.password}
                         name="password"
                         required
+                        type="password"
                         fullWidth
                     />
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        SIGN IN
+                        {language.signIn.toUpperCase()}
                     </Button>
                     <Stack direction={"row"} justifyContent={"space-between"} mt={2}>
-                        <Link href="/ForgotPassword" variant="body2">Forgot Password?</Link>
-                        <Link href="/ActivateAccount" variant="body2">Activate Account</Link>
+                        <Link href="/ForgotPassword" variant="body2">{language.forgotPassword}</Link>
+                        <Link href="/ActivateAccount" variant="body2">{language.activateAccount}</Link>
                     </Stack>
                 </Box>
             </Box>

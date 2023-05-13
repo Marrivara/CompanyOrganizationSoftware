@@ -1,21 +1,15 @@
-import LoginPage from "./LoginPage";
-import ForgotPassword from "./ForgotPassword"
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ActivateAccount from "./ActivateAccount";
-import SetNewPassword from "./SetNewPassword";
+import { useEffect } from "react"
+import Pages from "./Pages"
 
 function Page() {
-        return (
 
-                <BrowserRouter>
-                        <Routes>
-                                <Route path="/" element={<LoginPage/>}/>
-                                <Route path="forgotPassword" element={<ForgotPassword/>}/>
-                                <Route path="activateAccount" element={<ActivateAccount/>}/>
-                                <Route path="setNewPassword" element={<SetNewPassword/>}/>
-                        </Routes>
-                </BrowserRouter>
-        )
+    useEffect(() => {
+        localStorage.getItem("language") === "en" ? localStorage.setItem("language", 'en') : localStorage.setItem("language", 'tr')
+    }, [])
+
+    return (
+        <Pages />
+    )
 
 }
 export default Page
