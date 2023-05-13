@@ -3,7 +3,7 @@ import ForgotPassword from "./ForgotPassword"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ActivateAccount from "./ActivateAccount";
 import SetNewPassword from "./SetNewPassword";
-import { tr, en } from "../Greeting/languages";
+import { tr, en } from "./languages";
 import { Box, Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
