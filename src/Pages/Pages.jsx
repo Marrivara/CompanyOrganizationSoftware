@@ -3,9 +3,9 @@ import ForgotPassword from "./ForgotPassword"
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ActivateAccount from "./ActivateAccount";
 import SetNewPassword from "./SetNewPassword";
-import { tr, en } from "./languages";
+import { tr, en } from "../Components/languages";
 import { Box, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { GB, TR } from 'country-flag-icons/react/3x2'
 

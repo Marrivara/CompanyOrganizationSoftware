@@ -1,15 +1,19 @@
-import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import React from "react";
 import { LanguageContext } from "./Pages";
+import EmailInput from "../Components/EmailInput";
+import { useForm } from "react-hook-form";
 
 function ActivateAccount() {
+
+    const { handleSubmit, control } = useForm();
 
     const language = React.useContext(LanguageContext);
 
     const [submitted, setSubmitted] = useState(false)
 
-    const handleSubmit = (event) => {
+    const onSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
@@ -42,20 +46,9 @@ function ActivateAccount() {
                 }}>
                     <Typography variant="h3" >{language.activateAccount}</Typography>
                 </Box>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
-                    <TextField
-                        margin="normal"
-                        color="primary"
-                        required
-                        autoFocus
-                        id="email"
-                        label={language.email}
-                        name="email"
-                        fullWidth
-
-
-                    />
+                    <EmailInput control={control} language={language}/>
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>

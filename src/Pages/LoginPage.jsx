@@ -1,21 +1,21 @@
-import { Box, Button, Container, Link, Stack, TextField, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, Button, Container, Link, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { LanguageContext } from "./Pages";
-
-
+import EmailInput from "../Components/EmailInput";
+import { useForm } from "react-hook-form";
+import Password from "../Components/Password";
 
 
 function LoginPage() {
 
-
     const language = React.useContext(LanguageContext);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
+    const { handleSubmit, control } = useForm();
+
+    const onSubmit = (data) => {
         console.log({
-            email: data.get("email"),
-            password: data.get("password"),
+            email: data.email,
+            password: data.password,
         });
     }
 
@@ -43,29 +43,10 @@ function LoginPage() {
                 }}>
                     <Typography variant="h2" >{language.signIn}</Typography>
                 </Box>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        color="primary"
-                        required
-                        fullWidth
-                        autoFocus
-                        id="email"
-                        label={language.email}
-                        name="email"
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
 
-
-                    />
-                    <TextField
-                        margin="normal"
-                        color="primary"
-                        id="password"
-                        label={language.password}
-                        name="password"
-                        required
-                        type="password"
-                        fullWidth
-                    />
+                    <EmailInput control={control} language={language} />
+                    <Password control={control} language={language} />
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
                         {language.signIn}

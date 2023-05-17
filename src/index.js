@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Page from './Components/Page';
+import Page from './Pages/Page';
 import './App.css'
 
 
