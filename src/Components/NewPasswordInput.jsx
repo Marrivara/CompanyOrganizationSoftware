@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { Button, IconButton, InputAdornment, Stack, TextField} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Button, IconButton, InputAdornment, Stack, TextField, Box, LinearProgress, Typography } from '@mui/material'
 import InfoIcon from '@mui/icons-material/Info';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PasswordValidation from './PasswordValidation';
 import { HtmlTooltip } from './ToolTip';
+import StrengthBar from './StrengthBar';
 
 const NewPasswordInput = ({ onInputChange, language }) => {
 
@@ -11,6 +12,7 @@ const NewPasswordInput = ({ onInputChange, language }) => {
     const [inputColor, setInputColor] = useState('primary');
     const [passwordIsValid, setPasswordIsValid] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [passwordStrength, setStrength] = useState(0);
     const [validations, setValidations] = useState([
         { condition: language.passwordValidation.length, isValid: false },
         { condition: language.passwordValidation.upperCase, isValid: false },
@@ -24,13 +26,21 @@ const NewPasswordInput = ({ onInputChange, language }) => {
         setShowPassword(!showPassword);
     };
 
-
-
-
     const checkPasswordValid = (newValidations) => {
         const isValid = newValidations.every((validation) => validation.isValid);
         setInputColor(isValid ? 'success' : 'error')
         return isValid;
+    }
+
+    useEffect(() => {
+        setStrength(passwordIsValid ? calculatePasswordStrength : 0)
+    }, [password])
+
+    const calculatePasswordStrength = () => {
+        if (password.length >= 12) {
+            return (password.length >= 16 ? 100 : 70)
+        } else { 
+            return 50 }
     }
 
     const handleSubmit = (e) => {
@@ -82,9 +92,7 @@ const NewPasswordInput = ({ onInputChange, language }) => {
         setPasswordIsValid(checkPasswordValid(updatedValidations))
         setValidations(updatedValidations);
     }
-
     
-
     return (
         <>
             <Stack display={'flex'} alignItems={'flex-end'}>
@@ -122,7 +130,11 @@ const NewPasswordInput = ({ onInputChange, language }) => {
 
             />
 
-            <Button onClick={handleSubmit} fullWidth variant="contained" sx={{ mt: 4 }}>
+            <StrengthBar strength={passwordStrength} />
+
+
+
+            <Button onClick={handleSubmit} fullWidth variant="contained" sx={{ mt: 3 }}>
                 {language.send}
             </Button>
 
