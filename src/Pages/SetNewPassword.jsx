@@ -25,7 +25,7 @@ function SetNewPassword({type}) {
     useEffect(() => {
         const verifyLink = async () => {
             try {
-                const response = await axios.post('http://localhost:5000/auth/' + type, {
+                const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/' + type, {
                     token: token,
                 });
                 setMessage(response.message)
@@ -49,7 +49,7 @@ function SetNewPassword({type}) {
         console.log(data.password)
         if (isLinkValid) {
             try {
-                const response = await axios.post('http://localhost:5000/auth/setNewPassword', {
+                const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/setNewPassword', {
                     email: email,
                     password: data.password
                 });

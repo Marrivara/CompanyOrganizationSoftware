@@ -16,7 +16,7 @@ function ForgotPassword() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/auth/forgotPassword', {
+            const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/forgotPassword', {
                 email: data.email,
             });
             console.log(response.data)

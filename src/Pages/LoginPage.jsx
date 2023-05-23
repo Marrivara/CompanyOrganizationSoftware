@@ -15,7 +15,7 @@ function LoginPage() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('/api/login', {
+            const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/login', {
                 email: data.email,
                 password: data.password
             });

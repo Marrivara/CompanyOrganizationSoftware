@@ -16,7 +16,7 @@ function ActivateAccount() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/auth/activateUser', {
+            const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/activateUser', {
                 email: data.email,
             });
             console.log(response.data)
