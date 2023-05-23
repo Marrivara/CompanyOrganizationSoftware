@@ -44,7 +44,8 @@ function Pages() {
                         <Route path="/" element={<LoginPage />} />
                         <Route path="forgotPassword" element={<ForgotPassword />} />
                         <Route path="activateAccount" element={<ActivateAccount />} />
-                        <Route path="setNewPassword" element={<SetNewPassword />} />
+                        <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"}/>} />
+                        <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"}/>} />
                     </Routes>
                 </BrowserRouter>
             </LanguageContext.Provider>

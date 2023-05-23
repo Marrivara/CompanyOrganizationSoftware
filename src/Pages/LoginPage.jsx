@@ -4,6 +4,7 @@ import { LanguageContext } from "./Pages";
 import EmailInput from "../Components/EmailInput";
 import { useForm } from "react-hook-form";
 import Password from "../Components/Password";
+import axios from "axios";
 
 
 function LoginPage() {
@@ -12,12 +13,18 @@ function LoginPage() {
 
     const { handleSubmit, control } = useForm();
 
-    const onSubmit = (data) => {
-        console.log({
-            email: data.email,
-            password: data.password,
-        });
+    const onSubmit = async (data) => {
+        try {
+            const response = await axios.post('/api/login', {
+                email: data.email,
+                password: data.password
+            });
+            console.log(response.data)
+        } catch (error) {
+            console.error(error)
+        }
     }
+
 
     return (
 

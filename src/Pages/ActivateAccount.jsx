@@ -4,6 +4,7 @@ import React from "react";
 import { LanguageContext } from "./Pages";
 import EmailInput from "../Components/EmailInput";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 function ActivateAccount() {
 
@@ -13,13 +14,17 @@ function ActivateAccount() {
 
     const [submitted, setSubmitted] = useState(false)
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-        });
-        setSubmitted(true)
+    const onSubmit = async (data) => {
+        try {
+            const response = await axios.post('http://localhost:5000/auth/activateUser', {
+                email: data.email,
+            });
+            console.log(response.data)
+            setSubmitted(true)
+        } catch (error) {
+            console.error(error)
+        }
+        
     }
 
     return (
