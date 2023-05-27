@@ -5,6 +5,7 @@ import { LanguageContext } from "./Pages";
 import EmailInput from "../Components/EmailInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { url } from "../Url";
 
 function ActivateAccount() {
 
@@ -16,7 +17,7 @@ function ActivateAccount() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/activateUser', {
+            const response = await axios.post( url +'/auth/activateAccount', {
                 email: data.email,
             });
             console.log(response.data)

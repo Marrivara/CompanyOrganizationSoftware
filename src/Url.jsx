@@ -1,0 +1,1 @@
+export const url = "http://test1-env-1.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com"

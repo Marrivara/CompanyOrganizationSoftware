@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { LanguageContext } from "./Pages";
 import NewPasswordInput from "../Components/NewPasswordInput";
 import axios from "axios";
+import { url } from "../Url";
 
 function SetNewPassword({type}) {
 
@@ -25,7 +26,7 @@ function SetNewPassword({type}) {
     useEffect(() => {
         const verifyLink = async () => {
             try {
-                const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/' + type, {
+                const response = await axios.post( url + '/auth/' + type, {
                     token: token,
                 });
                 setMessage(response.message)
@@ -49,7 +50,7 @@ function SetNewPassword({type}) {
         console.log(data.password)
         if (isLinkValid) {
             try {
-                const response = await axios.post('http://test1-env.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com/auth/setNewPassword', {
+                const response = await axios.post(url + '/auth/setNewPassword', {
                     email: email,
                     password: data.password
                 });
