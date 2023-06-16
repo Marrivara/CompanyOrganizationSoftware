@@ -6,11 +6,14 @@ import { useForm } from "react-hook-form";
 import Password from "../Components/Password";
 import axios from "axios";
 import { url } from "../Url";
+import { useNavigate } from "react-router-dom";
 
 
 function LoginPage() {
 
     const language = React.useContext(LanguageContext);
+
+    const navigate = useNavigate()
 
     const { handleSubmit, control } = useForm();
 
@@ -20,7 +23,12 @@ function LoginPage() {
                 email: data.email,
                 password: data.password
             });
-            console.log(response.data)
+            if(response.ok){
+                localStorage.setItem("userToken", response.token)
+                localStorage.setItem("userId", response.id)
+                localStorage.setItem("role", response.role)
+                navigate(`/home/${localStorage.getItem("userId")}`)
+            }
         } catch (error) {
             console.error(error)
         }
