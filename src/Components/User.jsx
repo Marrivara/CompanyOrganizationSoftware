@@ -1,8 +1,12 @@
 import { Delete, Edit } from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
+import axios from 'axios';
 import React, { useState } from 'react'
+import { url } from '../Url';
+import FormDialog from './FormDialog';
+import { LanguageContext } from '../Pages/Pages';
 
-const User = ({ user }) => {
+const User = ({ user , onDeleteUser}) => {
 
     const userBoxStyle = {
         display: 'flex',
@@ -37,13 +41,22 @@ const User = ({ user }) => {
         color: '#fff',
         marginRight: '8px',
     };
+    const language = React.useContext(LanguageContext);
 
-    const editButtonStyle = {
-        backgroundColor: '#3f51b5',
-        color: '#fff',
-    };
+    
 
-    const [disabled, setDisabled] = useState(user.role==='manager' ? true : false)
+    const deleteUser = () => {
+        axios.delete(url + "/" + user.id)
+            .then((response) => {
+                if(response.ok){
+                    onDeleteUser()
+                }
+            })
+            .catch((err) => { console.log(err) })
+        
+    }
+
+    const [allowed, setAllowed] = useState(localStorage.getItem("role")===1 ? false : true)
 
     return (
         <div>
@@ -53,19 +66,17 @@ const User = ({ user }) => {
                         {user.name}
                     </Typography>
                     <Typography style={userDetailsStyle}>
-                        Email: {user.email}
+                        {language.user.email} {user.email}
                     </Typography>
-                    <Typography style={userDetailsStyle}>Department: {user.department}</Typography>
-                    <Typography style={userDetailsStyle}>Role: {user.role}</Typography>
+                    <Typography style={userDetailsStyle}>{language.user.department} {user.department.name}</Typography>
+                    <Typography style={userDetailsStyle}>{language.user.role} {user.role}</Typography>
                 </Box>
-                <Box style={actionButtonsStyle}>
-                    <IconButton disabled={disabled} style={deleteButtonStyle}>
+                {allowed && <Box style={actionButtonsStyle}>
+                    <IconButton onClick={deleteUser} style={deleteButtonStyle}>
                         <Delete/>
                     </IconButton>
-                    <IconButton style={editButtonStyle}>
-                        <Edit />
-                    </IconButton>
-                </Box>
+                    <FormDialog isEdit={true} user={user}/>
+                </Box>}
             </Box>
         </div>
     )

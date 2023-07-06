@@ -21,6 +21,27 @@ const en = {
         specialChar: "Password should contain a special character!",
         lowerCase: "Password should contains lowercase letters!",
         space: "Password cannot contain spaces"
+    },
+    homePage:{
+        search: "Search",
+        rowsPerPage: "Users Per Page:"
+    },
+    user: {
+        email: "Email:",
+        department: "Department:",
+        role: "Role:"
+    },
+    formDialog: {
+        add: "Add",
+        addUser: "Add a New User",
+        addUserDetail: "To add a new user, please fill out this form.",
+        editUser: "Edit the User",
+        editUserDetail: "To edit the user, please fill out this form.",
+        name: "Name Surname",
+        email: "Email Address",
+        department: "Department",
+        cancel: "Cancel",
+        submit: "Submit"
     }
 
 };
@@ -48,6 +69,27 @@ const tr = {
         specialChar: "Şifre özel karakter içermelidir.",
         lowerCase: "Şifre küçük harf içermelidir.",
         space: "Şifre boşluk içeremez"
+    },
+    homePage:{
+        search: "Ara",
+        rowsPerPage: "Sayfa Başına Kullanıcı Sayısı:"
+    },
+    user: {
+        email: "E-posta:",
+        department: "Departman:",
+        role: "Rol:"
+    },
+    formDialog: {
+        add: "Ekle",
+        addUser: "Yeni Bir Kullanıcı Ekle",
+        addUserDetail: "Yeni bir kullanıcı eklemek için lütfen formu doldurunuz.",
+        editUser: "Kullanıcıyı düzenle",
+        editUserDetail: "Kullanıcıyı düzenlemek için lütfen formu doldurunuz.",
+        name: "İsim Soyisim",
+        email: "E-posta Adresi",
+        department: "Departman",
+        cancel: "Vazgeç",
+        submit: "Gönder"
     }
 
 
