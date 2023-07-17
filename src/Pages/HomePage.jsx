@@ -190,8 +190,8 @@ const HomePage = ({ changeLanguage }) => {
                         ))}
                     </TextField>
 
-                    {localStorage.getItem("role")==="1" ? <FormDialog isEdit={false} /> : <></>}
-
+                    {/*localStorage.getItem("role")==="1" ? <FormDialog isEdit={false} /> : <></>*/}
+                    <FormDialog isEdit={false} />
                 </Stack>
 
                 {loaded ? (
