@@ -7,9 +7,10 @@ import Password from "../Components/Password";
 import axios from "axios";
 import { url } from "../Url";
 import { useNavigate } from "react-router-dom";
+import ChangeLanguageButton from "../Components/ChangeLanguageButton";
 
 
-function LoginPage() {
+function LoginPage({changeLanguage}) {
 
     const language = React.useContext(LanguageContext);
 
@@ -18,16 +19,18 @@ function LoginPage() {
     const { handleSubmit, control } = useForm();
 
     const onSubmit = async (data) => {
+        console.log("girdi")
         try {
             const response = await axios.post(url + "/auth/login", {
                 email: data.email,
                 password: data.password
             });
-            if(response.ok){
-                localStorage.setItem("userToken", response.token)
-                localStorage.setItem("userId", response.id)
-                localStorage.setItem("role", response.role)
-                navigate(`/home/${localStorage.getItem("userId")}`)
+            console.log(response.status)
+            if(response.status=="200"){
+                console.log("burası")
+                localStorage.setItem("userToken", response.data.accessToken)
+                localStorage.setItem("userId", response.data.userId)
+                navigate(`/home`)
             }
         } catch (error) {
             console.error(error)
@@ -35,7 +38,10 @@ function LoginPage() {
     }
 
 
-    return (
+    return (<>
+        <Box display={"flex"} justifyContent={"flex-end"} marginBottom={6}>
+            <ChangeLanguageButton changeLanguage={changeLanguage}/>
+        </Box>
 
         <Container maxWidth="sm" sx={{
             display: "flex",
@@ -75,7 +81,7 @@ function LoginPage() {
             </Box>
 
         </Container>
-
+        </>
     );
 }
 

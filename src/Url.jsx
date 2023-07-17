@@ -1,1 +1,1 @@
-export const url = "http://test1-env-1.eba-ftejhmzc.eu-central-1.elasticbeanstalk.com"
+export const url = "http://Internship-backend-delta.eu-west-1.elasticbeanstalk.com"

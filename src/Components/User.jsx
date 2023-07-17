@@ -46,7 +46,7 @@ const User = ({ user , onDeleteUser}) => {
     
 
     const deleteUser = () => {
-        axios.delete(url + "/" + user.id)
+        axios.delete(url + "/users/" + user.id)
             .then((response) => {
                 if(response.ok){
                     onDeleteUser()
@@ -56,26 +56,26 @@ const User = ({ user , onDeleteUser}) => {
         
     }
 
-    const [allowed, setAllowed] = useState(localStorage.getItem("role")===1 ? false : true)
+    const [allowed, setAllowed] = useState(localStorage.getItem("role")==="1" ? true : false)
 
     return (
         <div>
             <Box style={userBoxStyle}>
                 <Box style={userInfoStyle}>
                     <Typography style={userNameStyle} variant="h6">
-                        {user.name}
+                        {user.name} {user.surname}
                     </Typography>
                     <Typography style={userDetailsStyle}>
                         {language.user.email} {user.email}
                     </Typography>
                     <Typography style={userDetailsStyle}>{language.user.department} {user.department.name}</Typography>
-                    <Typography style={userDetailsStyle}>{language.user.role} {user.role}</Typography>
+                    <Typography style={userDetailsStyle}>{language.user.role} {user.role.name}</Typography>
                 </Box>
                 {allowed && <Box style={actionButtonsStyle}>
                     <IconButton onClick={deleteUser} style={deleteButtonStyle}>
                         <Delete/>
                     </IconButton>
-                    <FormDialog isEdit={true} user={user}/>
+                    {<FormDialog isEdit={true} user={user}/>}
                 </Box>}
             </Box>
         </div>

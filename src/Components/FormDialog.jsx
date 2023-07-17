@@ -18,18 +18,37 @@ import { LanguageContext } from '../Pages/Pages';
 export default function FormDialog({ isEdit, user }) {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState(isEdit ? user.name : "");
+    const [surname, setSurname] = useState(isEdit ? user.surname : "");
     const [email, setEmail] = useState(isEdit ? user.email : "");
+
+    const [role, setRole] = useState(isEdit ? user.role : "");
+    const [roles, setRoles] = useState([]);
+
+    const [company, setCompany] = useState(isEdit ? user.company : "");
+    const [companies, setCompanies] = useState([]);
+
     const [department, setDepartment] = useState(isEdit ? user.department : "");
     const [departments, setDepartments] = useState([]);
 
     const handleClickOpen = () => {
         setOpen(true);
-        getDepartments();
+        getCompaniesAndRoles()
+    };
+
+
+    const getCompaniesAndRoles = async () => {
+        try {
+            const response = await axios.get(url + '/users/create');
+            setCompanies(response.data.companies);
+            setRoles(response.data.roles);
+        } catch (error) {
+            console.error('Error while getting companies and roles:', error);
+        }
     };
 
     const getDepartments = async () => {
         try {
-            const response = await axios.get(url + '/api/departments');
+            const response = await axios.get(url + '/users/departments/' + company.id);
             setDepartments(response.data);
         } catch (error) {
             console.error('Error while getting departments:', error);
@@ -38,13 +57,49 @@ export default function FormDialog({ isEdit, user }) {
 
     const language = React.useContext(LanguageContext)
 
+    const createUser = async() =>{
+            try {
+                const response = await axios.post(url + "/users/create", {
+                    name: name,
+                    surname: surname,
+                    email: email,
+                    role: role.id,
+                    department: department.id
+                });
+            } catch (error) {
+                console.error(error)
+            }
+    }
+    const updateUser = async() =>{
+        try {
+            const response = await axios.put(url + "/users/"+ user.id, {
+                name: name,
+                surname: surname,
+                email: email,
+                role: role.id,
+                department: department.id
+            });
+        } catch (error) {
+            console.error(error)
+        }
+}
+
     const handleSubmit = () => {
-        console.log('Email:', email);
-        console.log('name', name);
-        console.log('Department id:', department);
+        if(isEdit){
+            updateUser()
+        }else{
+            createUser()
+        }
         setOpen(false);
     };
 
+    const handleRoleChange = (event) => {
+        setRole(event.target.value);
+    };
+    const handleCompanyChange = (event) => {
+        setCompany(event.target.value);
+        getDepartments()
+    };
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
     };
@@ -85,7 +140,6 @@ export default function FormDialog({ isEdit, user }) {
                         variant="standard"
                         onChange={(e) => setName(e.target.value)}
                     />
-                    {/* ****Surname Field ****
                     <TextField
                         autoFocus
                         margin="dense"
@@ -96,7 +150,7 @@ export default function FormDialog({ isEdit, user }) {
                         variant="standard"
                         value={surname}
                         onChange={(e) => setSurname(e.target.value)}
-                    />*/}
+                    />
                     <TextField
                         autoFocus
                         margin="dense"
@@ -109,7 +163,41 @@ export default function FormDialog({ isEdit, user }) {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
+                        id="role"
+                        margin="dense"
+                        select
+                        label="role"
+                        fullWidth
+                        variant="outlined"
+                        size='small'
+                        value={role.id}
+                        onChange={handleRoleChange}
+                    >
+                        {roles.map((role, key) => (
+                            <MenuItem key={key} value={role.id}>
+                                {role.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
                         id="company"
+                        margin="dense"
+                        select
+                        label="Company"
+                        fullWidth
+                        variant="outlined"
+                        size='small'
+                        value={company.id}
+                        onChange={handleCompanyChange}
+                    >
+                        {companies.map((company, key) => (
+                            <MenuItem key={key} value={company.id}>
+                                {company.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        id="department"
                         margin="dense"
                         select
                         label={language.formDialog.department}

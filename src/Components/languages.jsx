@@ -37,7 +37,7 @@ const en = {
         addUserDetail: "To add a new user, please fill out this form.",
         editUser: "Edit the User",
         editUserDetail: "To edit the user, please fill out this form.",
-        name: "Name Surname",
+        name: "Name",
         email: "Email Address",
         department: "Department",
         cancel: "Cancel",

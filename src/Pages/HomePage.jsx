@@ -3,29 +3,33 @@ import { url } from '../Url'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import ShowUsers from '../Components/ShowUsers'
-import { Box, Button, Container, IconButton, MenuItem, Pagination, Skeleton, Stack, TablePagination, TextField } from '@mui/material'
+import { Box, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import FormDialog from '../Components/FormDialog'
 import { LanguageContext } from './Pages'
+import ChangeLanguageButton from '../Components/ChangeLanguageButton'
+import TopBar from '../Components/TopBar'
 
-const HomePage = () => {
+const HomePage = ({ changeLanguage }) => {
 
     const [verified, setVerified] = useState(true)
     const [loaded, setLoaded] = useState(true)
     const [users, setUsers] = useState([
-        { name: "John Smith", email: " john.smith@example.com", department: { id: 1, name: "Sales" }, role: "Manager" },
-        { name: "Emily Davis", email: "emily.davis@example.com", department: { id: 1, name: "Sales" }, role: "Manager" },
-        { name: "Michael Wilson", email: "michael.wilson@example.com", department: { id: 2, name: "Mang" }, role: "Manager" },
-        { name: "Olivia Brown", email: "olivia.brown@example.com", department: { id: 2, name: "Mang" }, role: "Manager" },
-        { name: "Daniel Taylor", email: "daniel.taylor@example.com", department: { id: 1, name: "Sales" }, role: "Manager" },
+        {name:"System" , surname:"Administrator", email:"admin@delta.smart", department:{id:1, name:"Genel Müdürlük"}, role:{id:1, name:"Admin"}, company:{id:1, name:"Delta Akıllı Teknolojiler"}},
+        {name:"Tolgahan" , surname:"Oysal", email:"tolgahan.oysal@deltasmart.tech", department:{id:1, name:"Genel Müdürlük"}, role:{id:2, name:"Manager"}, company:{id:1, name:"Delta Akıllı Teknolojiler"}}
 
     ])
+    const [length, setLength] = useState(0)
     const [search, setSearch] = useState("")
     const [pageSize, setPageSize] = useState(10)
     const [pageNumber, setPageNumber] = useState(0)
-    const [sortType, setSortType] = useState("id")
+    const [sortType, setSortType] = useState(['id', 'asc']);
 
     const language = React.useContext(LanguageContext);
+
+    /*useEffect(() => {
+        verifyUser()
+    })*/
 
     const handleChangePage = (event, newPage) => {
         setPageNumber(newPage);
@@ -36,56 +40,81 @@ const HomePage = () => {
         setPageNumber(0);
     };
 
+    /*useEffect(() => {
+        if (verified) {
+            getUsers()
+        }
+
+    }, [sortType])*/
 
     const navigate = useNavigate()
 
-    const sortOptions = [
-        {
-            value: 'id',
-            label: 'ID',
-        },
+    const sortField = [
         {
             value: 'name',
             label: 'Name',
         },
         {
-            value: 'town',
-            label: 'Town',
-        }
+            value: 'surname',
+            label: 'Surname',
+        },
+        {
+            value: 'department',
+            label: 'Department',
+        },
+        {
+            value: 'id',
+            label: 'Date',
+        },
+
+    ];
+    const sortOrder = [
+        {
+            value: 'asc',
+            label: 'Ascendent',
+        },
+        {
+            value: 'desc',
+            label: 'Descendent',
+        },
     ];
 
     const params = {
-        search: search,
+        keyword: search,
         pageSize: pageSize,
         pageNumber: pageNumber,
-        sortType: sortType,
+        sort: sortType,
     };
 
     const verifyUser = () => {
         axios.post(url + "/verifyLoginToken", {}, {
             headers: {
-                'userToken': localStorage.getItem("userToken")
+                'Authorization': localStorage.getItem("userToken")
             }
         }).then((result) => {
-            if (result.ok) {
+            if (result.status == "200") {
                 setVerified(true)
                 getUsers()
             } else {
-                localStorage.setItem("userToken", "")
+                //localStorage.setItem("userToken", "")
                 localStorage.setItem("userId", null)
-                localStorage.setItem("role", "")
+                //localStorage.setItem("role", "")
                 navigate("/")
             }
         }).catch((err) => {
             console.log(err)
+            localStorage.setItem("userToken", "")
+            localStorage.setItem("userId", null)
+            //localStorage.setItem("role", "")
             navigate("/")
         });
     }
 
     const getUsers = () => {
-        axios.get(url + "/", { params })
+        axios.get(url + "/users/all", { params })
             .then((response) => {
-                setUsers(response.data)
+                setLength(response.data.length)
+                setUsers(response.data.users)
                 setLoaded(true)
             })
             .catch((err) => { console.log(err) })
@@ -93,22 +122,21 @@ const HomePage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(search, sortType, pageNumber)
-        console.log(params)
+        getUsers()
     }
     const handleSearchChange = (event) => {
         setSearch(event.target.value)
 
     }
-    const handleSortChange = (event) => {
-        setSortType(event.target.value)
-        console.log(sortType)
+    const handleSortFieldChange = (event) => {
+        setSortType([event.target.value, sortType[1]])
+    }
+    const handleSortOrderChange = (event) => {
+        setSortType([sortType[0], event.target.value])
+
     }
 
 
-    useEffect(() => {
-        // verifyUser()
-    })
 
     const load = () => {
         setLoaded(!loaded)
@@ -119,8 +147,11 @@ const HomePage = () => {
             <div>User Is Not Verified</div>
         )
     } else {
-        return (
+        return (<>
+            <TopBar changeLanguage={changeLanguage} />
             <Container maxWidth='lg'>
+                
+
                 <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="flex-end" spacing={12}>
                     <div>
                         <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={search} onChange={handleSearchChange} />
@@ -129,21 +160,37 @@ const HomePage = () => {
                         </IconButton>
                     </div>
                     <TextField
-                        id="sortBy"
+                        id="sortByField"
                         select
                         defaultValue="id"
                         variant="outlined"
                         size='small'
-                        value={sortType}
-                        onChange={handleSortChange}
+                        value={sortField.label}
+                        onChange={handleSortFieldChange}
                     >
-                        {sortOptions.map((option) => (
+                        {sortField.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
-                    <FormDialog isEdit={false} />
+                    <TextField
+                        id="sortByOrder"
+                        select
+                        defaultValue="asc"
+                        variant="outlined"
+                        size='small'
+                        value={sortOrder.label}
+                        onChange={handleSortOrderChange}
+                    >
+                        {sortOrder.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    {localStorage.getItem("role")==="1" ? <FormDialog isEdit={false} /> : <></>}
 
                 </Stack>
 
@@ -153,16 +200,16 @@ const HomePage = () => {
                         <Box display={'flex'} justifyContent={'center'}>
                             <TablePagination
                                 component="div"
-                                count={100}
+                                count={length}
                                 page={pageNumber}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={pageSize}
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                                 labelRowsPerPage={language.homePage.rowsPerPage}
                                 labelDisplayedRows={({ from, to, count }) =>
-                                    `${from}-${to}` 
+                                    `${from}-${to}`
                                 }
-                                
+
                             />
                         </Box>
                     </>
@@ -186,6 +233,7 @@ const HomePage = () => {
 
 
             </Container>
+        </>
         )
     }
 }
