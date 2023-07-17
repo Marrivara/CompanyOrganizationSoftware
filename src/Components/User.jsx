@@ -56,7 +56,7 @@ const User = ({ user , onDeleteUser}) => {
         
     }
 
-    const [allowed, setAllowed] = useState(localStorage.getItem("role")==="1" ? true : false)
+    const [allowed, setAllowed] = useState(localStorage.getItem("role")==="1" ? true : true)
 
     return (
         <div>
