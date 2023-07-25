@@ -19,7 +19,6 @@ function LoginPage({changeLanguage}) {
     const { handleSubmit, control } = useForm();
 
     const onSubmit = async (data) => {
-        console.log("girdi")
         try {
             const response = await axios.post(url + "/auth/login", {
                 email: data.email,
@@ -27,9 +26,11 @@ function LoginPage({changeLanguage}) {
             });
             console.log(response.status)
             if(response.status=="200"){
-                console.log("burası")
                 localStorage.setItem("userToken", response.data.accessToken)
-                localStorage.setItem("userId", response.data.userId)
+                localStorage.setItem("userId", response.data.user.userId)
+                localStorage.setItem("name", response.data.user.name)
+                localStorage.setItem("surname", response.data.user.surname)
+                localStorage.setItem("role", response.data.user.role)
                 navigate(`/home`)
             }
         } catch (error) {

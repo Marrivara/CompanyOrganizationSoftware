@@ -7,6 +7,7 @@ import { tr, en } from "../Components/languages";
 import React from "react";
 import { useState } from "react";
 import HomePage from "./HomePage";
+import Users from "./Users";
 
 export const LanguageContext = React.createContext();
 
@@ -38,6 +39,7 @@ function Pages() {
                                 <Navigate to={`/home`} replace />
                             )} />
                         <Route path="/home" element={<HomePage changeLanguage={changeLanguage}/>} />
+                        <Route path="/users" element={<Users changeLanguage={changeLanguage}/>} />
                         <Route path="forgotPassword" element={<ForgotPassword />} />
                         <Route path="activateAccount" element={<ActivateAccount />} />
                         <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
