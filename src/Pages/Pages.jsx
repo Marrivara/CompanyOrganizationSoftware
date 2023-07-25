@@ -33,7 +33,7 @@ function Pages() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={
-                            localStorage.getItem("userId") === null ? (
+                            localStorage.getItem("userId") == "null" ? (
                                 <LoginPage changeLanguage={changeLanguage} />
                             ) : (
                                 <Navigate to={`/home`} replace />

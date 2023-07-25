@@ -6,11 +6,15 @@ import { Logout } from '@mui/icons-material'
 import OpenableDrawer from './OpenableDrawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import LocalStorageDelete from '../LocalStorageFunctions';
+import { useNavigate } from 'react-router-dom';
 
 const TopBar = ({ changeLanguage }) => {
 
+    const navigate = useNavigate()
+
     const logout = () => {
         LocalStorageDelete()
+        navigate("/")
     }
     const [open, setOpen] = useState(false);
 

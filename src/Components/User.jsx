@@ -75,7 +75,7 @@ const User = ({ user , onDeleteUser}) => {
                     <IconButton onClick={deleteUser} style={deleteButtonStyle}>
                         <Delete/>
                     </IconButton>
-                    {<FormDialog isEdit={true} user={user}/>}
+                    {/*<FormDialog isEdit={true} user={user}/>*/}
                 </Box>}
             </Box>
         </div>

@@ -97,15 +97,16 @@ const Users = ({ changeLanguage }) => {
     }
 
     const getUsers = () => {
-        axios.get(url + "/users/all", { params }, {
+        axios.get(url + "/users/all", {
             headers: {
                 'Authorization': localStorage.getItem("userToken")
             }
         })
             .then((response) => {
-                setLength(response.data.length)
-                setUsers(response.data.users)
+                setLength(response.data.data.length)
+                setUsers(response.data.data.users)
                 setLoaded(true)
+                
             })
             .catch((err) => { console.log(err) })
     }

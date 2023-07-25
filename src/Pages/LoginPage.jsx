@@ -24,13 +24,14 @@ function LoginPage({changeLanguage}) {
                 email: data.email,
                 password: data.password
             });
-            console.log(response.status)
+            console.log(response.data.data.accessToken)
             if(response.status=="200"){
-                localStorage.setItem("userToken", response.data.accessToken)
-                localStorage.setItem("userId", response.data.user.userId)
-                localStorage.setItem("name", response.data.user.name)
-                localStorage.setItem("surname", response.data.user.surname)
-                localStorage.setItem("role", response.data.user.role)
+
+                localStorage.setItem("userToken", response.data.data.accessToken)
+                localStorage.setItem("userId", response.data.data.user.id)
+                localStorage.setItem("name", response.data.data.user.name)
+                localStorage.setItem("surname", response.data.data.user.surname)
+                localStorage.setItem("role", response.data.data.user.role)
                 navigate(`/home`)
             }
         } catch (error) {

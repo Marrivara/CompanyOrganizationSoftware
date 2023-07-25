@@ -1,1 +1,1 @@
-export const url = "https://delta.eu-west-1.elasticbeanstalk.com/"
+export const url = "https://delta.eu-west-1.elasticbeanstalk.com"

@@ -39,8 +39,8 @@ export default function FormDialog({ isEdit, user }) {
     const getCompaniesAndRoles = async () => {
         try {
             const response = await axios.get(url + '/users/create');
-            setCompanies(response.data.companies);
-            setRoles(response.data.roles);
+            setCompanies(response.data.data.companies);
+            setRoles(response.data.data.roles);
         } catch (error) {
             console.error('Error while getting companies and roles:', error);
         }
@@ -49,7 +49,7 @@ export default function FormDialog({ isEdit, user }) {
     const getDepartments = async () => {
         try {
             const response = await axios.get(url + '/users/departments/' + company.id);
-            setDepartments(response.data);
+            setDepartments(response.data.data);
         } catch (error) {
             console.error('Error while getting departments:', error);
         }
@@ -173,8 +173,8 @@ export default function FormDialog({ isEdit, user }) {
                         value={role.id}
                         onChange={handleRoleChange}
                     >
-                        {roles.map((role, key) => (
-                            <MenuItem key={key} value={role.id}>
+                        {roles.map((role) => (
+                            <MenuItem key={role.id} value={role.id}>
                                 {role.name}
                             </MenuItem>
                         ))}
@@ -190,8 +190,8 @@ export default function FormDialog({ isEdit, user }) {
                         value={company.id}
                         onChange={handleCompanyChange}
                     >
-                        {companies.map((company, key) => (
-                            <MenuItem key={key} value={company.id}>
+                        {companies.map((company) => (
+                            <MenuItem key={company.id} value={company.id}>
                                 {company.name}
                             </MenuItem>
                         ))}

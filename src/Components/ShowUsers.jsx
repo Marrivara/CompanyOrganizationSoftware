@@ -11,8 +11,8 @@ const ShowUsers = ({ users , onDelete}) => {
                 overflowY: 'auto',
                 marginTop:'20px',
             }}>
-            {users.map((user, i) => (
-                <User key={i} user={user} onDeleteUser={onDelete}></User>
+            {users?.map((user) => (
+                <User key={user.id} user={user} onDeleteUser={onDelete}></User>
             ))}
         </Container>
     )

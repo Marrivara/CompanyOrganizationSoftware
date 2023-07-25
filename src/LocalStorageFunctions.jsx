@@ -1,7 +1,7 @@
 
 const LocalStorageDelete= () => {
     localStorage.setItem("userToken", "")
-    localStorage.removeItem("userId")
+    localStorage.setItem("userId", null)
     localStorage.setItem("role", "")
     localStorage.setItem("name", "")
     localStorage.setItem("surname","")
