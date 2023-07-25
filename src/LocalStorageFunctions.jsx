@@ -1,12 +1,12 @@
 
 const LocalStorageDelete= () => {
-    localStorage.setItem("userToken", "")
-    localStorage.setItem("userId", null)
-    localStorage.setItem("role", "")
-    localStorage.setItem("name", "")
-    localStorage.setItem("surname","")
-    localStorage.setItem("email" ,"")
-    localStorage.setItem("department", "")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("userToken")
+    localStorage.removeItem("role")
+    localStorage.removeItem("name")
+    localStorage.removeItem("surname")
+    localStorage.removeItem("email")
+    localStorage.removeItem("department")
 }
 
 export default LocalStorageDelete

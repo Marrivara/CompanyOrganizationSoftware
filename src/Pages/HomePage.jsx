@@ -15,11 +15,16 @@ const HomePage = ({changeLanguage}) => {
     const department = localStorage.getItem("department")
 
     useEffect(()=>{
-        if(localStorage.getItem("userId") == "null") {
+        checkUser()
+        console.log("tekrar home")
+    },[])
+
+    const checkUser = () => {
+        if(localStorage.getItem("userId") === null) {
             LocalStorageDelete()
             navigate("/")
         }
-    })
+    }
 
   return (
     <>

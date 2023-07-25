@@ -14,6 +14,7 @@ const TopBar = ({ changeLanguage }) => {
 
     const logout = () => {
         LocalStorageDelete()
+        console.log("tekrar topbar")
         navigate("/")
     }
     const [open, setOpen] = useState(false);

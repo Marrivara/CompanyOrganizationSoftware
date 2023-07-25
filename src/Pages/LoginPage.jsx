@@ -31,7 +31,9 @@ function LoginPage({changeLanguage}) {
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("name", response.data.data.user.name)
                 localStorage.setItem("surname", response.data.data.user.surname)
-                localStorage.setItem("role", response.data.data.user.role)
+                localStorage.setItem("role", response.data.data.user.role.name)
+                localStorage.setItem("email", response.data.data.user.email)
+                localStorage.setItem("department", response.data.data.user.department.name)
                 navigate(`/home`)
             }
         } catch (error) {

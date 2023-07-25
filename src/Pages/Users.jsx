@@ -15,10 +15,11 @@ const Users = ({ changeLanguage }) => {
     const [loaded, setLoaded] = useState(true)
     const [users, setUsers] = useState([])
     const [length, setLength] = useState(0)
-    const [search, setSearch] = useState("")
+    const [keyword, setSearch] = useState("")
     const [pageSize, setPageSize] = useState(10)
     const [pageNumber, setPageNumber] = useState(0)
-    const [sortType, setSortType] = useState(['id', 'asc']);
+    const [sort, setSortField] = useState('id')
+    const [order, setSortOrder] = useState('asc')
 
     const language = React.useContext(LanguageContext);
     const handleChangePage = (event, newPage) => {
@@ -32,11 +33,11 @@ const Users = ({ changeLanguage }) => {
 
     useEffect(() => {
         getUsers()
-    }, [sortType])
+    }, [sort, order])
 
     const navigate = useNavigate()
 
-    const sortField = [
+    const sortFields = [
         {
             value: 'name',
             label: 'Name',
@@ -55,7 +56,7 @@ const Users = ({ changeLanguage }) => {
         },
 
     ];
-    const sortOrder = [
+    const sortOrders = [
         {
             value: 'asc',
             label: 'Ascendent',
@@ -67,46 +68,27 @@ const Users = ({ changeLanguage }) => {
     ];
 
     const params = {
-        keyword: search,
+        keyword: keyword,
         pageSize: pageSize,
         pageNumber: pageNumber,
-        sort: sortType,
+        sort: sort,
+        order: order
+
     };
 
-    const verifyUser = () => {
-        axios.post(url + "/verifyLoginToken", {}, {
-            headers: {
-                'Authorization': localStorage.getItem("userToken")
-            }
-        }).then((result) => {
-            if (result.status == "200") {
-                getUsers()
-            } else {
-                //localStorage.setItem("userToken", "")
-                localStorage.setItem("userId", null)
-                //localStorage.setItem("role", "")
-                navigate("/")
-            }
-        }).catch((err) => {
-            console.log(err)
-            localStorage.setItem("userToken", "")
-            localStorage.setItem("userId", null)
-            //localStorage.setItem("role", "")
-            navigate("/")
-        });
-    }
-
     const getUsers = () => {
-        axios.get(url + "/users/all", {
-            headers: {
-                'Authorization': localStorage.getItem("userToken")
-            }
-        })
+        console.log(url + "/users/all",{params})
+        axios.get(url + "/users/all",{params},
+            {
+                headers: {
+                    'Authorization': localStorage.getItem("userToken")
+                }
+            })
             .then((response) => {
                 setLength(response.data.data.length)
                 setUsers(response.data.data.users)
                 setLoaded(true)
-                
+
             })
             .catch((err) => { console.log(err) })
     }
@@ -120,10 +102,10 @@ const Users = ({ changeLanguage }) => {
 
     }
     const handleSortFieldChange = (event) => {
-        setSortType([event.target.value, sortType[1]])
+        setSortField(event.target.value)
     }
     const handleSortOrderChange = (event) => {
-        setSortType([sortType[0], event.target.value])
+        setSortOrder(event.target.value)
 
     }
 
@@ -134,7 +116,7 @@ const Users = ({ changeLanguage }) => {
 
             <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="flex-end" spacing={{ xs: 1, md: 5, lg: 12 }}>
                 <Box display={"flex"}>
-                    <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={search} onChange={handleSearchChange} />
+                    <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={keyword} onChange={handleSearchChange} />
                     <IconButton type='submit'>
                         <SearchIcon />
                     </IconButton>
@@ -145,10 +127,10 @@ const Users = ({ changeLanguage }) => {
                     defaultValue="id"
                     variant="outlined"
                     size='small'
-                    value={sortField.label}
+                    value={sortFields.label}
                     onChange={handleSortFieldChange}
                 >
-                    {sortField.map((option) => (
+                    {sortFields.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
                         </MenuItem>
@@ -160,17 +142,17 @@ const Users = ({ changeLanguage }) => {
                     defaultValue="asc"
                     variant="outlined"
                     size='small'
-                    value={sortOrder.label}
+                    value={sortOrders.label}
                     onChange={handleSortOrderChange}
                 >
-                    {sortOrder.map((option) => (
+                    {sortOrders.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
                         </MenuItem>
                     ))}
                 </TextField>
 
-                {localStorage.getItem("role")==="1" ? <FormDialog isEdit={false} /> : <></>}
+                {localStorage.getItem("role") === "1" ? <FormDialog isEdit={false} /> : <></>}
             </Stack>
 
             {loaded ? (
