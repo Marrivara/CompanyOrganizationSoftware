@@ -18,7 +18,7 @@ function SetNewPassword({type}) {
 
     const navigate = useNavigate()
 
-    const [isLinkValid, setValid] = useState(true);
+    const [isLinkValid, setValid] = useState(false);
 
     const [message, setMessage] = useState("");
     const [email, setEmail] = useState();
@@ -27,12 +27,13 @@ function SetNewPassword({type}) {
         const verifyLink = async () => {
             try {
                 const response = await axios.post( url + '/auth/' + type +"?token="+token)
-                setMessage(response.message)
-                setEmail(response.email)
-                if (response.ok) {
+                setMessage(response.data.message)
+                setEmail(response.data.data.email)
+                if (response.status == "200") {
                     setValid(true)
+                    console.log("validated")
                 }
-
+                console.log(response)
             } catch (error) {
                 console.error(error)
                 setMessage("Api Error")
@@ -40,22 +41,22 @@ function SetNewPassword({type}) {
 
 
         }
-        console.log( url + '/auth/' + type +"?"+  new URLSearchParams(token).toString())
         verifyLink()
     })
 
     const handleFormSubmit = async (data) => {
-        console.log(data.password)
+        
         if (isLinkValid) {
             try {
                 const response = await axios.post(url + '/auth/setNewPassword', {
                     email: email,
-                    password: data.password
+                    password: data
                 });
-                console.log(response.data)
+                console.log(response)
             } catch (error) {
                 console.error(error)
             }
+            console.log(data, email)
         }
 
 
