@@ -26,12 +26,7 @@ function Pages() {
         localStorage.setItem("language", nextLanguage)
         setLanguage(nextLanguage)
     }
-
-    useEffect(()=>{
-        console.log("geldi")
-        console.log(signedIn)
-    })
-
+    
     return (
         <>
             <LanguageContext.Provider value={languages[language]}>

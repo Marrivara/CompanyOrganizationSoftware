@@ -24,6 +24,7 @@ const Users = ({ changeLanguage , setSignedIn}) => {
     const language = React.useContext(LanguageContext);
     const handleChangePage = (event, newPage) => {
         setPageNumber(newPage);
+        
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -33,7 +34,7 @@ const Users = ({ changeLanguage , setSignedIn}) => {
 
     useEffect(() => {
         getUsers()
-    }, [sort, order])
+    }, [sort, order,pageNumber,pageSize])
 
     const navigate = useNavigate()
 
@@ -77,8 +78,6 @@ const Users = ({ changeLanguage , setSignedIn}) => {
     };
 
     const getUsers = () => {
-        console.log(url + "/users/all"+ new URLSearchParams(params).toString())
-        console.log(url + "/users/all?keyword="+keyword+"&pageSize="+pageSize+"&pageNumber="+pageNumber+"&sort="+sort+"&order="+order)
         axios.get(url + "/users/all?" + new URLSearchParams(params).toString() ,
             {
                 headers: {
@@ -125,6 +124,7 @@ const Users = ({ changeLanguage , setSignedIn}) => {
                 <TextField
                     id="sortByField"
                     select
+                    label={language.homePage.sortBy}
                     defaultValue="id"
                     variant="outlined"
                     size='small'
@@ -140,6 +140,7 @@ const Users = ({ changeLanguage , setSignedIn}) => {
                 <TextField
                     id="sortByOrder"
                     select
+                    label={language.homePage.sortOrder}
                     defaultValue="asc"
                     variant="outlined"
                     size='small'
@@ -158,8 +159,8 @@ const Users = ({ changeLanguage , setSignedIn}) => {
 
             {loaded ? (
                 <>
-                    <ShowUsers users={users} onDelete={getUsers} />
-                    {/*<StickyHeadTable/>*/}
+                    {/*<ShowUsers users={users} onDelete={getUsers} />*/}
+                    <StickyHeadTable users={users}/>
                     <Box display={'flex'} justifyContent={'center'}>
                         <TablePagination
                             component="div"

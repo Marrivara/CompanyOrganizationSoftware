@@ -46,9 +46,14 @@ const User = ({ user , onDeleteUser}) => {
     
 
     const deleteUser = () => {
-        axios.delete(url + "/users/" + user.id)
+        axios.delete(url + "/users/" + user.id, {
+            headers:{
+                'Authorization' : localStorage.getItem("userToken")
+            }
+        })
             .then((response) => {
-                if(response.ok){
+                console.log(response)
+                if(response.status == "200"){
                     onDeleteUser()
                 }
             })

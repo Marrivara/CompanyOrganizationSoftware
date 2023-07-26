@@ -17,39 +17,48 @@ import { LanguageContext } from '../Pages/Pages';
 
 export default function FormDialog({ isEdit, user }) {
     const [open, setOpen] = useState(false);
+    const [loaded, setLoaded] = useState(false)
     const [name, setName] = useState(isEdit ? user.name : "");
     const [surname, setSurname] = useState(isEdit ? user.surname : "");
     const [email, setEmail] = useState(isEdit ? user.email : "");
 
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(isEdit ? user.role : "");
     const [roles, setRoles] = useState([]);
 
-    const [company, setCompany] = useState("");
+    const [company, setCompany] = useState(isEdit ? user.department.company : "");
     const [companies, setCompanies] = useState([]);
 
-    const [department, setDepartment] = useState("");
+    const [department, setDepartment] = useState(isEdit ? user.department : "");
     const [departments, setDepartments] = useState([]);
 
     const handleClickOpen = () => {
+
         setOpen(true);
         getCompaniesAndRoles()
+        if (isEdit) {
+            getDepartments(user.department.company.id)
+            setRole(user.role)
+            setCompany(user.department.company)
+            setDepartment(user.department)
+        }
+        setLoaded(true)
     };
 
-    useEffect(()=>{
-        if(isEdit){
 
+    useEffect(() => {
+        if (open) {
+            console.log("ikinci")
+            if ((company != "") & !isEdit) {
+                console.log(company)
+                getDepartments(company)
+            }
         }
-    },[companies])
 
-    useEffect(()=>{
-        if(company != ""){
-            getDepartments()
-        }
-    },[company])
+    }, [company])
 
     const getCompaniesAndRoles = async () => {
         try {
-            const response = await axios.get(url + '/users/create',{
+            const response = await axios.get(url + '/users/create', {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
                 }
@@ -61,9 +70,9 @@ export default function FormDialog({ isEdit, user }) {
         }
     };
 
-    const getDepartments = async () => {
+    const getDepartments = async (id) => {
         try {
-            const response = await axios.get(url + '/users/departments/' + company.id,{
+            const response = await axios.get(url + '/users/departments/' + id, {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
                 }
@@ -76,28 +85,28 @@ export default function FormDialog({ isEdit, user }) {
 
     const language = React.useContext(LanguageContext)
 
-    const createUser = async() =>{
-            try {
-                const response = await axios.post(url + "/users/create", {
-                    name: name,
-                    surname: surname,
-                    email: email,
-                    roleId: role.id,
-                    departmentId: department.id,
-                    companyId: company.id
-                },{
-                    headers: {
-                        'Authorization': localStorage.getItem("userToken")
-                    }
-                });
-                console.log(response)
-            } catch (error) {
-                console.error(error)
-            }
-    }
-    const updateUser = async() =>{
+    const createUser = async () => {
         try {
-            const response = await axios.put(url + "/users/"+ user.id, {
+            const response = await axios.post(url + "/users/create", {
+                name: name,
+                surname: surname,
+                email: email,
+                roleId: role.id,
+                departmentId: department.id,
+                companyId: company.id
+            }, {
+                headers: {
+                    'Authorization': localStorage.getItem("userToken")
+                }
+            });
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    const updateUser = async () => {
+        try {
+            const response = await axios.put(url + "/users/" + user.id, {
                 name: name,
                 surname: surname,
                 email: email,
@@ -108,12 +117,13 @@ export default function FormDialog({ isEdit, user }) {
         } catch (error) {
             console.error(error)
         }
-}
+    }
 
     const handleSubmit = () => {
-        if(isEdit){
-            updateUser()
-        }else{
+        if (isEdit) {
+            console.log(name, surname, email, role, department, company)
+            //updateUser()
+        } else {
             createUser()
         }
         setOpen(false);
@@ -141,11 +151,11 @@ export default function FormDialog({ isEdit, user }) {
 
     return (
         <div>
-            {isEdit ? 
-            <IconButton onClick={handleClickOpen} style={editButtonStyle}>
-                <Edit />
-            </IconButton> :
-            <Button variant="contained" onClick={handleClickOpen} startIcon={<AddIcon />}>{language.formDialog.add}</Button>
+            {isEdit ?
+                <IconButton onClick={handleClickOpen} style={editButtonStyle}>
+                    <Edit />
+                </IconButton> :
+                <Button variant="contained" onClick={handleClickOpen} startIcon={<AddIcon />}>{language.formDialog.add}</Button>
             }
 
             <Dialog open={open} onClose={handleClose}>
@@ -191,15 +201,16 @@ export default function FormDialog({ isEdit, user }) {
                         id="role"
                         margin="dense"
                         select
-                        label="role"
+                        label="Role"
                         fullWidth
+                        defaultValue={loaded ? role.id: ""}
                         variant="outlined"
                         size='small'
-                        value={role}
+                        value={role.id}
                         onChange={handleRoleChange}
                     >
                         {roles.map((role) => (
-                            <MenuItem key={role.id} value={role}>
+                            <MenuItem key={role.id} value={role.id}>
                                 {role.name}
                             </MenuItem>
                         ))}
@@ -209,14 +220,15 @@ export default function FormDialog({ isEdit, user }) {
                         margin="dense"
                         select
                         label="Company"
+                        defaultValue={loaded ? company.id: ""}
                         fullWidth
                         variant="outlined"
                         size='small'
-                        value={company}
+                        value={company.id}
                         onChange={handleCompanyChange}
                     >
                         {companies.map((company) => (
-                            <MenuItem key={company.id} value={company}>
+                            <MenuItem key={company.id} value={company.id}>
                                 {company.name}
                             </MenuItem>
                         ))}
@@ -228,12 +240,13 @@ export default function FormDialog({ isEdit, user }) {
                         label={language.formDialog.department}
                         fullWidth
                         variant="outlined"
+                        defaultValue={loaded ? department.id: ""}
                         size='small'
                         value={department}
                         onChange={handleDepartmentChange}
                     >
-                        {departments.map((department, key) => (
-                            <MenuItem key={key} value={department}>
+                        {departments.map((department) => (
+                            <MenuItem key={department.id} value={department.id}>
                                 {department.name}
                             </MenuItem>
                         ))}
