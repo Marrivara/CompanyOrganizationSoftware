@@ -8,13 +8,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LocalStorageDelete from '../LocalStorageFunctions';
 import { useNavigate } from 'react-router-dom';
 
-const TopBar = ({ changeLanguage }) => {
+const TopBar = ({ changeLanguage , setSignedIn}) => {
 
     const navigate = useNavigate()
 
     const logout = () => {
         LocalStorageDelete()
         console.log("tekrar topbar")
+        setSignedIn(false)
         navigate("/")
     }
     const [open, setOpen] = useState(false);

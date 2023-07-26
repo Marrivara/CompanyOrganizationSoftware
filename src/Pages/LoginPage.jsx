@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 import ChangeLanguageButton from "../Components/ChangeLanguageButton";
 
 
-function LoginPage({changeLanguage}) {
+function LoginPage({changeLanguage , setSignedIn}) {
 
     const language = React.useContext(LanguageContext);
+    const [loginError, setLoginError] = useState(false)
 
     const navigate = useNavigate()
 
@@ -26,18 +27,20 @@ function LoginPage({changeLanguage}) {
             });
             console.log(response.data.data.accessToken)
             if(response.status=="200"){
-
-                localStorage.setItem("userToken", response.data.data.accessToken)
                 localStorage.setItem("userId", response.data.data.user.id)
+                localStorage.setItem("userToken", response.data.data.accessToken)
                 localStorage.setItem("name", response.data.data.user.name)
                 localStorage.setItem("surname", response.data.data.user.surname)
                 localStorage.setItem("role", response.data.data.user.role.name)
                 localStorage.setItem("email", response.data.data.user.email)
                 localStorage.setItem("department", response.data.data.user.department.name)
-                navigate(`/home`)
+                setSignedIn(true)
+                setLoginError(false)
+                //navigate(`/home`)
             }
         } catch (error) {
             console.error(error)
+            setLoginError(true)
         }
     }
 
@@ -74,6 +77,7 @@ function LoginPage({changeLanguage}) {
                     <EmailInput control={control} language={language} />
                     <Password control={control} language={language} />
 
+                    {loginError && <Typography mt={1} variant="body2" color={'error'}>Email or password is wrong</Typography>}
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
                         {language.signIn}
                     </Button>

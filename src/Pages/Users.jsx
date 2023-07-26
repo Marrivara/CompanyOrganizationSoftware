@@ -10,9 +10,9 @@ import { LanguageContext } from './Pages'
 import TopBar from '../Components/TopBar'
 import StickyHeadTable from '../Components/StickyHeadTable'
 
-const Users = ({ changeLanguage }) => {
+const Users = ({ changeLanguage , setSignedIn}) => {
 
-    const [loaded, setLoaded] = useState(true)
+    const [loaded, setLoaded] = useState(false)
     const [users, setUsers] = useState([])
     const [length, setLength] = useState(0)
     const [keyword, setSearch] = useState("")
@@ -77,8 +77,9 @@ const Users = ({ changeLanguage }) => {
     };
 
     const getUsers = () => {
-        console.log(url + "/users/all",{params})
-        axios.get(url + "/users/all",{params},
+        console.log(url + "/users/all"+ new URLSearchParams(params).toString())
+        console.log(url + "/users/all?keyword="+keyword+"&pageSize="+pageSize+"&pageNumber="+pageNumber+"&sort="+sort+"&order="+order)
+        axios.get(url + "/users/all?" + new URLSearchParams(params).toString() ,
             {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
@@ -110,7 +111,7 @@ const Users = ({ changeLanguage }) => {
     }
 
     return (<>
-        <TopBar changeLanguage={changeLanguage} />
+        <TopBar changeLanguage={changeLanguage} setSignedIn={setSignedIn}/>
         <Container maxWidth='lg'>
 
 
@@ -152,7 +153,7 @@ const Users = ({ changeLanguage }) => {
                     ))}
                 </TextField>
 
-                {localStorage.getItem("role") === "1" ? <FormDialog isEdit={false} /> : <></>}
+                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} /> : <></>}
             </Stack>
 
             {loaded ? (
@@ -183,10 +184,10 @@ const Users = ({ changeLanguage }) => {
                         marginTop: '20px',
                     }}>
                     <>
-                        <Skeleton maxWidth='lg' height={100} animation="wave" />
-                        <Skeleton maxWidth='lg' height={90} animation="wave" style={{ marginBottom: '4px' }} />
-                        <Skeleton maxWidth='lg' height={80} animation="wave" style={{ marginBottom: '4px' }} />
-                        <Skeleton maxWidth='lg' height={70} animation="wave" />
+                        <Skeleton maxwidth='lg' height={100} animation="wave" />
+                        <Skeleton maxwidth='lg' height={90} animation="wave" style={{ marginBottom: '4px' }} />
+                        <Skeleton maxwidth='lg' height={80} animation="wave" style={{ marginBottom: '4px' }} />
+                        <Skeleton maxwidth='lg' height={70} animation="wave" />
                     </>
                 </Container>
             )

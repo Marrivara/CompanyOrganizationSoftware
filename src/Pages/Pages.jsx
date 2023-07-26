@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Redirect, Navigate } from 'react-router-d
 import ActivateAccount from "./ActivateAccount";
 import SetNewPassword from "./SetNewPassword";
 import { tr, en } from "../Components/languages";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import HomePage from "./HomePage";
 import Users from "./Users";
@@ -19,6 +19,7 @@ function Pages() {
     const languages = { tr, en }
 
     const [language, setLanguage] = useState(localStorage.getItem("language"))
+    const [signedIn, setSignedIn] = useState(localStorage.getItem("userId") != null)
 
     const changeLanguage = () => {
         const nextLanguage = language === 'en' ? 'tr' : 'en'
@@ -26,24 +27,30 @@ function Pages() {
         setLanguage(nextLanguage)
     }
 
+    useEffect(()=>{
+        console.log("geldi")
+        console.log(signedIn)
+    })
 
     return (
         <>
             <LanguageContext.Provider value={languages[language]}>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={
-                            localStorage.getItem("userId") != null ? (
-                                 <Navigate to={`/home`} replace />
-                            ) : (
-                               <LoginPage changeLanguage={changeLanguage} />
-                            )} />
-                        <Route path="/home" element={<HomePage changeLanguage={changeLanguage}/>} />
-                        <Route path="/users" element={<Users changeLanguage={changeLanguage}/>} />
-                        <Route path="forgotPassword" element={<ForgotPassword />} />
-                        <Route path="activateAccount" element={<ActivateAccount />} />
-                        <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
-                        <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} />} />
+                        <Route exact path="/home" element=
+                            {signedIn ?
+                                <HomePage changeLanguage={changeLanguage} signedIn={signedIn} setSignedIn={setSignedIn} />
+                                :
+                                <Navigate to="/" replace />
+                            } />
+                            <Route exact path="/" element=
+                                {signedIn ? <Navigate to="/home" replace/> : <LoginPage changeLanguage={changeLanguage} setSignedIn={setSignedIn}/>}
+                            />
+                            <Route path="/users" element={signedIn ? <Users changeLanguage={changeLanguage} setSignedIn={setSignedIn}/>: <Navigate to="/" replace />}/>
+                            <Route path="forgotPassword" element={<ForgotPassword />} />
+                            <Route path="activateAccount" element={<ActivateAccount />} />
+                            <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
+                            <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} />} />
                     </Routes>
                 </BrowserRouter>
             </LanguageContext.Provider>

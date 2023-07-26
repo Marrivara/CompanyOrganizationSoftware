@@ -26,9 +26,7 @@ function SetNewPassword({type}) {
     useEffect(() => {
         const verifyLink = async () => {
             try {
-                const response = await axios.post( url + '/auth/' + type, {
-                    token: token,
-                });
+                const response = await axios.post( url + '/auth/' + type +"?token="+token)
                 setMessage(response.message)
                 setEmail(response.email)
                 if (response.ok) {
@@ -42,7 +40,7 @@ function SetNewPassword({type}) {
 
 
         }
-
+        console.log( url + '/auth/' + type +"?"+  new URLSearchParams(token).toString())
         verifyLink()
     })
 

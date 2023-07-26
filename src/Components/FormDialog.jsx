@@ -21,13 +21,13 @@ export default function FormDialog({ isEdit, user }) {
     const [surname, setSurname] = useState(isEdit ? user.surname : "");
     const [email, setEmail] = useState(isEdit ? user.email : "");
 
-    const [role, setRole] = useState(isEdit ? user.role : "");
+    const [role, setRole] = useState("");
     const [roles, setRoles] = useState([]);
 
-    const [company, setCompany] = useState(isEdit ? user.company : "");
+    const [company, setCompany] = useState("");
     const [companies, setCompanies] = useState([]);
 
-    const [department, setDepartment] = useState(isEdit ? user.department : "");
+    const [department, setDepartment] = useState("");
     const [departments, setDepartments] = useState([]);
 
     const handleClickOpen = () => {
@@ -35,10 +35,25 @@ export default function FormDialog({ isEdit, user }) {
         getCompaniesAndRoles()
     };
 
+    useEffect(()=>{
+        if(isEdit){
+
+        }
+    },[companies])
+
+    useEffect(()=>{
+        if(company != ""){
+            getDepartments()
+        }
+    },[company])
 
     const getCompaniesAndRoles = async () => {
         try {
-            const response = await axios.get(url + '/users/create');
+            const response = await axios.get(url + '/users/create',{
+                headers: {
+                    'Authorization': localStorage.getItem("userToken")
+                }
+            });
             setCompanies(response.data.data.companies);
             setRoles(response.data.data.roles);
         } catch (error) {
@@ -48,7 +63,11 @@ export default function FormDialog({ isEdit, user }) {
 
     const getDepartments = async () => {
         try {
-            const response = await axios.get(url + '/users/departments/' + company.id);
+            const response = await axios.get(url + '/users/departments/' + company.id,{
+                headers: {
+                    'Authorization': localStorage.getItem("userToken")
+                }
+            });
             setDepartments(response.data.data);
         } catch (error) {
             console.error('Error while getting departments:', error);
@@ -63,9 +82,15 @@ export default function FormDialog({ isEdit, user }) {
                     name: name,
                     surname: surname,
                     email: email,
-                    role: role.id,
-                    department: department.id
+                    roleId: role.id,
+                    departmentId: department.id,
+                    companyId: company.id
+                },{
+                    headers: {
+                        'Authorization': localStorage.getItem("userToken")
+                    }
                 });
+                console.log(response)
             } catch (error) {
                 console.error(error)
             }
@@ -78,7 +103,8 @@ export default function FormDialog({ isEdit, user }) {
                 email: email,
                 role: role.id,
                 department: department.id
-            });
+            })
+            console.log(response);
         } catch (error) {
             console.error(error)
         }
@@ -98,7 +124,6 @@ export default function FormDialog({ isEdit, user }) {
     };
     const handleCompanyChange = (event) => {
         setCompany(event.target.value);
-        getDepartments()
     };
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
@@ -170,11 +195,11 @@ export default function FormDialog({ isEdit, user }) {
                         fullWidth
                         variant="outlined"
                         size='small'
-                        value={role.id}
+                        value={role}
                         onChange={handleRoleChange}
                     >
                         {roles.map((role) => (
-                            <MenuItem key={role.id} value={role.id}>
+                            <MenuItem key={role.id} value={role}>
                                 {role.name}
                             </MenuItem>
                         ))}
@@ -187,11 +212,11 @@ export default function FormDialog({ isEdit, user }) {
                         fullWidth
                         variant="outlined"
                         size='small'
-                        value={company.id}
+                        value={company}
                         onChange={handleCompanyChange}
                     >
                         {companies.map((company) => (
-                            <MenuItem key={company.id} value={company.id}>
+                            <MenuItem key={company.id} value={company}>
                                 {company.name}
                             </MenuItem>
                         ))}
@@ -204,11 +229,11 @@ export default function FormDialog({ isEdit, user }) {
                         fullWidth
                         variant="outlined"
                         size='small'
-                        value={department.id}
+                        value={department}
                         onChange={handleDepartmentChange}
                     >
                         {departments.map((department, key) => (
-                            <MenuItem key={key} value={department.id}>
+                            <MenuItem key={key} value={department}>
                                 {department.name}
                             </MenuItem>
                         ))}

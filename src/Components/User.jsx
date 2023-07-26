@@ -56,7 +56,7 @@ const User = ({ user , onDeleteUser}) => {
         
     }
 
-    const [allowed, setAllowed] = useState(localStorage.getItem("role")==="1" ? true : true)
+    const [allowed, setAllowed] = useState(localStorage.getItem("role")==="Admin" ? true : true)
 
     return (
         <div>
@@ -75,7 +75,7 @@ const User = ({ user , onDeleteUser}) => {
                     <IconButton onClick={deleteUser} style={deleteButtonStyle}>
                         <Delete/>
                     </IconButton>
-                    {/*<FormDialog isEdit={true} user={user}/>*/}
+                    <FormDialog isEdit={true} user={user}/>
                 </Box>}
             </Box>
         </div>
