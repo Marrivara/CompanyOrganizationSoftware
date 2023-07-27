@@ -50,7 +50,7 @@ export default function FormDialog({ isEdit, user }) {
             console.log("ikinci")
             if ((company != "") & !isEdit) {
                 console.log(company)
-                getDepartments(company)
+                getDepartments(company.id)
             }
         }
 
@@ -130,13 +130,16 @@ export default function FormDialog({ isEdit, user }) {
     };
 
     const handleRoleChange = (event) => {
-        setRole(event.target.value);
+        const selectedRole = roles.find(x => x.id === event.target.value);
+        setRole(selectedRole);
     };
     const handleCompanyChange = (event) => {
-        setCompany(event.target.value);
+        const selectedCompany = companies.find(x => x.id === event.target.value);
+        setCompany(selectedCompany);
     };
     const handleDepartmentChange = (event) => {
-        setDepartment(event.target.value);
+        const selectedDepartment = departments.find(x => x.id === event.target.value);
+        setDepartment(selectedDepartment);
     };
 
 
@@ -242,7 +245,7 @@ export default function FormDialog({ isEdit, user }) {
                         variant="outlined"
                         defaultValue={loaded ? department.id: ""}
                         size='small'
-                        value={department}
+                        value={department.id}
                         onChange={handleDepartmentChange}
                     >
                         {departments.map((department) => (
