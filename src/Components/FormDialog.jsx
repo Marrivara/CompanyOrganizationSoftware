@@ -25,7 +25,7 @@ export default function FormDialog({ isEdit, user }) {
     const [role, setRole] = useState(isEdit ? user.role : "");
     const [roles, setRoles] = useState([]);
 
-    const [company, setCompany] = useState(isEdit ? user.department.company : "");
+    const [company, setCompany] = useState(isEdit ? user.company : "");
     const [companies, setCompanies] = useState([]);
 
     const [department, setDepartment] = useState(isEdit ? user.department : "");
@@ -36,9 +36,9 @@ export default function FormDialog({ isEdit, user }) {
         setOpen(true);
         getCompaniesAndRoles()
         if (isEdit) {
-            getDepartments(user.department.company.id)
+            getDepartments(user.company.id)
             setRole(user.role)
-            setCompany(user.department.company)
+            setCompany(user.company)
             setDepartment(user.department)
         }
         setLoaded(true)
@@ -58,11 +58,12 @@ export default function FormDialog({ isEdit, user }) {
 
     const getCompaniesAndRoles = async () => {
         try {
-            const response = await axios.get(url + '/users/create', {
+            const response = await axios.get(url + '/users/roles-and-companies', {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
                 }
             });
+            console.log(response)
             setCompanies(response.data.data.companies);
             setRoles(response.data.data.roles);
         } catch (error) {
@@ -106,13 +107,16 @@ export default function FormDialog({ isEdit, user }) {
     }
     const updateUser = async () => {
         try {
-            const response = await axios.put(url + "/users/" + user.id, {
+            const response = await axios.put(url + "/users/" + user.id,{
                 name: name,
                 surname: surname,
                 email: email,
                 role: role.id,
                 department: department.id
-            })
+            },{
+                headers:{
+                    'Authorization' : localStorage.getItem("userToken")
+                }})
             console.log(response);
         } catch (error) {
             console.error(error)

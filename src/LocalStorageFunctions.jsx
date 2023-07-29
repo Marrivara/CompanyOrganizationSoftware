@@ -7,6 +7,7 @@ const LocalStorageDelete= () => {
     localStorage.removeItem("surname")
     localStorage.removeItem("email")
     localStorage.removeItem("department")
+    localStorage.removeItem("company")
 }
 
 export default LocalStorageDelete

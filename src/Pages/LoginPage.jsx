@@ -25,7 +25,7 @@ function LoginPage({changeLanguage , setSignedIn}) {
                 email: data.email,
                 password: data.password
             });
-            console.log(response.data.data.accessToken)
+
             if(response.status=="200"){
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("userToken", response.data.data.accessToken)
@@ -34,9 +34,10 @@ function LoginPage({changeLanguage , setSignedIn}) {
                 localStorage.setItem("role", response.data.data.user.role.name)
                 localStorage.setItem("email", response.data.data.user.email)
                 localStorage.setItem("department", response.data.data.user.department.name)
+                localStorage.setItem("company", response.data.data.user.company.name)
+                console.log(response)
                 setSignedIn(true)
                 setLoginError(false)
-                //navigate(`/home`)
             }
         } catch (error) {
             console.error(error)

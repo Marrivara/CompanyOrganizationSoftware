@@ -8,9 +8,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { url } from '../Url';
-import { Box, IconButton } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import FormDialog from './FormDialog';
+import DeleteAlert from './DeleteAlert';
+import { useState } from 'react';
+
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 130 },
@@ -31,52 +34,77 @@ const columns = [
         label: 'Role',
         type: 'nested',
         minWidth: 50,
-    },
+    },/*
+    {
+        id: 'company',
+        label: 'Company',
+        type: 'nested',
+        minWidth: 50,
+    },*/
     {
         id: "buttons",
         label: "",
         type: "buttons",
-        minWidth: 80
+        minWidth: 0
     }
 
 
 ];
 
-/*const users = [
-    { name: "System", surname: "Administrator", email: "admin@delta.smart", department: { id: 1, name: "Genel Müdürlük" }, role: { id: 1, name: "Admin" }, company: { id: 1, name: "Delta Akıllı Teknolojiler" } },
-    { name: "Tolgahan", surname: "Oysal", email: "tolgahan.oysal@deltasmart.tech", department: { id: 1, name: "Genel Müdürlük" }, role: { id: 2, name: "Manager" }, company: { id: 1, name: "Delta Akıllı Teknolojiler" } }
-];*/
+export default function StickyHeadTable({ users, onDeleteUser }) {
 
-const deleteUser = () => {
-    axios.delete(url + "/users/")
-        .then((response) => {
-            if (response.ok) {
-                //onDeleteUser()
+    const deleteButtonStyle = {
+        backgroundColor: '#f44336',
+        color: '#fff',
+        marginRight: '8px',
+    };
+
+    const [deleteAlertOpen, setDeleteAlertOpen] = useState(false)
+
+    const [userIdToDelete, setUserIdToDelete] = useState()
+
+    const openDeleteAlert = (userId) => {
+        setDeleteAlertOpen(true)
+        setUserIdToDelete(userId)
+    }
+
+    const handleDeleteAlertClose = (choice) => {
+        setDeleteAlertOpen(false)
+        if (choice) {
+            deleteUser()
+        }
+
+    }
+
+    const deleteUser = () => {
+        axios.delete(url + "/users/" + userIdToDelete, {
+            headers: {
+                'Authorization': localStorage.getItem("userToken")
             }
         })
-        .catch((err) => { console.log(err) })
+            .then((response) => {
+                if (response.status == "200") {
+                    console.log(response)
+                    onDeleteUser()
+                }
+            })
+            .catch((error) => { console.log(error) })
+    }
 
-}
-
-const deleteButtonStyle = {
-    backgroundColor: '#f44336',
-    color: '#fff',
-    marginRight: '8px',
-};
-
-export default function StickyHeadTable({ users }) {
+    const allowed = localStorage.getItem("role") == "Admin";
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden', marginTop:'20px'}}>
+        <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '20px' }}>
             <TableContainer sx={{ maxHeight: '70vh' }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
+
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth , backgroundColor:'#F0F0F0' }}
+                                    style={{ minWidth: column.minWidth, backgroundColor: '#F0F0F0' }}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -87,7 +115,7 @@ export default function StickyHeadTable({ users }) {
                         {users
                             .map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -95,9 +123,9 @@ export default function StickyHeadTable({ users }) {
                                                     {column.type == 'nested'
                                                         ? value.name
                                                         : value}
-                                                    {column.type == 'buttons' ? <>
+                                                    {column.type == 'buttons' & allowed ? <>
                                                         <Box display={'flex'} flexDirection={'row'}>
-                                                            <IconButton onClick={deleteUser} style={deleteButtonStyle}>
+                                                            <IconButton onClick={({ }) => { openDeleteAlert(row.id) }} style={deleteButtonStyle}>
                                                                 <Delete />
                                                             </IconButton>
                                                             <FormDialog isEdit={true} user={row} />
@@ -112,6 +140,11 @@ export default function StickyHeadTable({ users }) {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <DeleteAlert open={deleteAlertOpen} handleClose={handleDeleteAlertClose} />
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                This is an error alert — <strong>check it out!</strong>
+            </Alert>
         </Paper>
     );
 }

@@ -85,8 +85,9 @@ const Users = ({ changeLanguage , setSignedIn}) => {
                 }
             })
             .then((response) => {
-                setLength(response.data.data.length)
-                setUsers(response.data.data.users)
+                console.log(response)
+                setLength(response.data.data.totalElements)
+                setUsers(response.data.data.content)
                 setLoaded(true)
 
             })
@@ -160,7 +161,7 @@ const Users = ({ changeLanguage , setSignedIn}) => {
             {loaded ? (
                 <>
                     {/*<ShowUsers users={users} onDelete={getUsers} />*/}
-                    <StickyHeadTable users={users}/>
+                    <StickyHeadTable users={users} onDelete={getUsers}/>
                     <Box display={'flex'} justifyContent={'center'}>
                         <TablePagination
                             component="div"

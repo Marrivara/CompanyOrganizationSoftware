@@ -18,7 +18,6 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn }) => {
 
     useEffect(() => {
         checkUser()
-        console.log("tekrar home" + signedIn)
     }, [])
 
     const checkUser = () => {
@@ -57,13 +56,7 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn }) => {
                         </Typography>
                     </Box>
 
-
                     <Box>
-
-
-
-
-
                         <Typography variant="body1" gutterBottom>
                             Email: {email}
                         </Typography>
@@ -73,13 +66,6 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn }) => {
                         <Typography variant="body1" gutterBottom>
                             Role: {role}
                         </Typography>
-
-
-
-                        {/*<Typography variant="h4" >{name} {surname}</Typography>
-                        <Typography variant="h5" >Email: {email}</Typography>
-                <Typography variant="h5" >Department: {department}</Typography>*/}
-
 
                     </Box>
                 </Box>

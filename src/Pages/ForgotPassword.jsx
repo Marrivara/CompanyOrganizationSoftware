@@ -15,15 +15,21 @@ function ForgotPassword() {
 
     const [submitted, setSubmitted] = useState(false)
 
+    const [message, setMessage] = useState("")
+
     const onSubmit = async (data) => {
         try {
             const response = await axios.post(url +'/auth/forgotPassword', {
                 email: data.email,
             });
-            console.log(response.data)
-            setSubmitted(true)
+            /*Set a new message with response's message*/
+            if(response.ok == "200"){
+                setMessage(response.data.message)
+                setSubmitted(true)
+            }
         } catch (error) {
             console.error(error)
+            setMessage(error.response.data.message)
         }
         
     }
@@ -60,7 +66,7 @@ function ForgotPassword() {
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
                         {language.sendForgotPassword}
                     </Button>
-                    {submitted && <Typography variant="h6" sx={{ mt: 1 }}>{language.activationLinkSent}</Typography>}
+                    <Typography variant="h6" sx={{ mt: 1 }}>{message}</Typography>
                     <Typography variant="body2" mt={1}>
                         {language.alreadyHaveAccount}{' '}
                         <Link href="/">
