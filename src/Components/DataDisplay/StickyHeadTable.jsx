@@ -7,11 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
-import { url } from '../Url';
+import { url } from '../../Resources/Url';
 import { Alert, AlertTitle, Box, Button, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import FormDialog from './FormDialog';
-import DeleteAlert from './DeleteAlert';
+import FormDialog from '../OpenableComponents/FormDialog';
+import DeleteAlert from '../OpenableComponents/DeleteAlert';
 import { useState } from 'react';
 
 
@@ -27,20 +27,20 @@ const columns = [
         id: 'department',
         label: 'Department',
         type: 'nested',
-        minWidth: 150,
+        minWidth: 100,
     },
     {
         id: 'role',
         label: 'Role',
         type: 'nested',
         minWidth: 50,
-    },/*
+    },
     {
         id: 'company',
         label: 'Company',
         type: 'nested',
         minWidth: 50,
-    },*/
+    },
     {
         id: "buttons",
         label: "",
@@ -51,7 +51,7 @@ const columns = [
 
 ];
 
-export default function StickyHeadTable({ users, onDeleteUser }) {
+export default function StickyHeadTable({ users, onUsersChange }) {
 
     const deleteButtonStyle = {
         backgroundColor: '#f44336',
@@ -84,11 +84,15 @@ export default function StickyHeadTable({ users, onDeleteUser }) {
         })
             .then((response) => {
                 if (response.status == "200") {
+                    //DELETED MESSAGE
                     console.log(response)
-                    onDeleteUser()
+                    onUsersChange()
                 }
             })
-            .catch((error) => { console.log(error) })
+            .catch((error) => { 
+                //NOT DELETED MESSAGE
+                console.log(error)
+            })
     }
 
     const allowed = localStorage.getItem("role") == "Admin";
@@ -128,7 +132,7 @@ export default function StickyHeadTable({ users, onDeleteUser }) {
                                                             <IconButton onClick={({ }) => { openDeleteAlert(row.id) }} style={deleteButtonStyle}>
                                                                 <Delete />
                                                             </IconButton>
-                                                            <FormDialog isEdit={true} user={row} />
+                                                            <FormDialog isEdit={true} user={row} onUsersChange={onUsersChange}/>
                                                         </Box>
                                                     </> : <></>}
                                                 </TableCell>
@@ -141,10 +145,6 @@ export default function StickyHeadTable({ users, onDeleteUser }) {
                 </Table>
             </TableContainer>
             <DeleteAlert open={deleteAlertOpen} handleClose={handleDeleteAlertClose} />
-            <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>
-                This is an error alert — <strong>check it out!</strong>
-            </Alert>
         </Paper>
     );
 }

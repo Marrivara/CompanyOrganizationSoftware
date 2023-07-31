@@ -3,7 +3,7 @@ import { Button, IconButton, InputAdornment, Stack, TextField, Box, LinearProgre
 import InfoIcon from '@mui/icons-material/Info';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PasswordValidation from './PasswordValidation';
-import { HtmlTooltip } from './ToolTip';
+import { HtmlTooltip } from '../ToolTip';
 import StrengthBar from './StrengthBar';
 
 const NewPasswordInput = ({ onInputChange, language }) => {

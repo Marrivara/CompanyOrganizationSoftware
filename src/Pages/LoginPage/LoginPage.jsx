@@ -1,13 +1,13 @@
 import { Box, Button, Container, Link, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { LanguageContext } from "./Pages";
-import EmailInput from "../Components/EmailInput";
+import { LanguageContext } from "../Pages";
+import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
-import Password from "../Components/Password";
+import Password from "../../Components/InputFields/Password";
 import axios from "axios";
-import { url } from "../Url";
+import { url } from "../../Resources/Url";
 import { useNavigate } from "react-router-dom";
-import ChangeLanguageButton from "../Components/ChangeLanguageButton";
+import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
 
 function LoginPage({changeLanguage , setSignedIn}) {
@@ -27,6 +27,11 @@ function LoginPage({changeLanguage , setSignedIn}) {
             });
 
             if(response.status=="200"){
+
+                //Might store the id's of the objects****
+
+
+
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("userToken", response.data.data.accessToken)
                 localStorage.setItem("name", response.data.data.user.name)
@@ -75,7 +80,7 @@ function LoginPage({changeLanguage , setSignedIn}) {
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
 
-                    <EmailInput control={control} language={language} />
+                    <EmailInput control={control} language={language} defaultValue={""} variant={'outlined'} />
                     <Password control={control} language={language} />
 
                     {loginError && <Typography mt={1} variant="body2" color={'error'}>Email or password is wrong</Typography>}

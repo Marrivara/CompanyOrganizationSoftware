@@ -24,7 +24,7 @@ const en = {
     },
     homePage:{
         search: "Search",
-        rowsPerPage: "Users Per Page:",
+        rowsPerPage: "Rows Per Page:",
         sortBy: "SortBy",
         sortOrder: "Order"
     },
@@ -74,7 +74,7 @@ const tr = {
     },
     homePage:{
         search: "Ara",
-        rowsPerPage: "Sayfa Başına Kullanıcı Sayısı:",
+        rowsPerPage: "Sayfa Başına Satır Sayısı:",
         sortBy: "Alan",
         sortOrder: "Sıralama"
     },

@@ -1,11 +1,11 @@
 import { Box, Button, Container, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import React from "react";
-import { LanguageContext } from "./Pages";
-import EmailInput from "../Components/EmailInput";
+import { LanguageContext } from "../Pages";
+import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { url } from "../Url";
+import { url } from "../../Resources/Url";
 
 function ActivateAccount() {
 

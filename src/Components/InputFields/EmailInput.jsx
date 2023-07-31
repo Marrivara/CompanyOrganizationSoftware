@@ -1,25 +1,28 @@
 import { TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 
-const Password = ({control,language}) => {
+const EmailInput = ({control, language, defaultValue, variant}) => {
+ 
 
   return (
     <Controller
-        name="password"
+        name="email"
         control={control}
-        defaultValue=""
-        rules={{ required: language.passwordRequired}}
+        defaultValue={defaultValue}
+        rules={{ required: language.emailRequired , minLength:4, pattern: {value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: language.wrongEmail}}}
         render={({ field, fieldState }) => (
           <TextField
             margin='normal'
             color='primary'
-            id='password'
             required
-            label={language.password}
+            autoFocus
+            id='email'
+            name='email'
+            label={language.email}
             fullWidth
-            type="password"
+            variant={variant}
             error={!!fieldState.error}
             helperText={fieldState.error ? fieldState.error.message : null}
             {...field}
@@ -29,4 +32,4 @@ const Password = ({control,language}) => {
   );
 };
 
-export default Password;
+export default EmailInput;

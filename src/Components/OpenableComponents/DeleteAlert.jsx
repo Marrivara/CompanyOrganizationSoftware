@@ -18,18 +18,17 @@ export default function DeleteAlert({ open, handleClose}) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Use Google's location service?"}
+                    "Delete The User?"
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Let Google help apps determine location. This means sending anonymous
-                        location data to Google, even when no apps are running.
+                        Are you sure you want to delete this user?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => { handleClose(false) }}>Disagree</Button>
+                    <Button onClick={() => { handleClose(false) }}>Cancel</Button>
                     <Button onClick={() => { handleClose(true) }} autoFocus>
-                        Agree
+                        Yes
                     </Button>
                 </DialogActions>
             </Dialog>

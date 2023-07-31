@@ -1,20 +1,20 @@
-import LoginPage from "./LoginPage";
-import ForgotPassword from "./ForgotPassword"
+import LoginPage from "./LoginPage/LoginPage";
+import ForgotPassword from "../Components/InputFields/ForgotPassword"
 import { BrowserRouter, Routes, Route, Redirect, Navigate } from 'react-router-dom';
-import ActivateAccount from "./ActivateAccount";
-import SetNewPassword from "./SetNewPassword";
-import { tr, en } from "../Components/languages";
+import ActivateAccount from "./LoginPage/ActivateAccount";
+import SetNewPassword from "./LoginPage/SetNewPassword";
+import { tr, en } from "../Resources/languages";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import HomePage from "./HomePage";
-import Users from "./Users";
+import HomePage from "./AfterLoginPages/HomePage";
+import Users from "./AfterLoginPages/Users";
+import { Alert, Snackbar } from "@mui/material";
 
 export const LanguageContext = React.createContext();
 
 
 
 function Pages() {
-
 
     const languages = { tr, en }
 
@@ -26,9 +26,19 @@ function Pages() {
         localStorage.setItem("language", nextLanguage)
         setLanguage(nextLanguage)
     }
-    
-    return (
-        <>
+
+    const [snackbarState, setSnacbarState] = useState({
+        snackbarOpen: false,
+        snackbarMessage: "",
+        severity: "",
+    })
+
+    const handleClose = () => {
+        setSnacbarState({ ...snackbarState, open: false })
+    };
+
+    return (<>
+       
             <LanguageContext.Provider value={languages[language]}>
                 <BrowserRouter>
                     <Routes>
@@ -38,18 +48,27 @@ function Pages() {
                                 :
                                 <Navigate to="/" replace />
                             } />
-                            <Route exact path="/" element=
-                                {signedIn ? <Navigate to="/home" replace/> : <LoginPage changeLanguage={changeLanguage} setSignedIn={setSignedIn}/>}
-                            />
-                            <Route path="/users" element={signedIn ? <Users changeLanguage={changeLanguage} setSignedIn={setSignedIn}/>: <Navigate to="/" replace />}/>
-                            <Route path="forgotPassword" element={<ForgotPassword />} />
-                            <Route path="activateAccount" element={<ActivateAccount />} />
-                            <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
-                            <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} />} />
+                        <Route exact path="/" element=
+                            {signedIn ? <Navigate to="/home" replace /> : <LoginPage changeLanguage={changeLanguage} setSignedIn={setSignedIn} />}
+                        />
+                        <Route path="/users" element={signedIn ? <Users setSnackbarState={setSnacbarState} changeLanguage={changeLanguage} setSignedIn={setSignedIn} /> : <Navigate to="/" replace />} />
+                        <Route path="forgotPassword" element={<ForgotPassword />} />
+                        <Route path="activateAccount" element={<ActivateAccount />} />
+                        <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} />} />
+                        <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} />} />
                     </Routes>
                 </BrowserRouter>
             </LanguageContext.Provider>
-        </>
+
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                severity
+                autoHideDuration={2000}
+                onClose={handleClose}
+                open={snackbarState.snackbarOpen}
+            >
+                <Alert severity={snackbarState.severity}>{snackbarState.snackbarMessage}</Alert></Snackbar>
+    </>
     )
 
 }

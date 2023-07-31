@@ -1,10 +1,10 @@
 import { Box, Container, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { LanguageContext } from "./Pages";
-import NewPasswordInput from "../Components/NewPasswordInput";
+import { LanguageContext } from "../Pages";
+import NewPasswordInput from "../../Components/InputFields/NewPasswordInput";
 import axios from "axios";
-import { url } from "../Url";
+import { url } from "../../Resources/Url";
 
 function SetNewPassword({type}) {
 
