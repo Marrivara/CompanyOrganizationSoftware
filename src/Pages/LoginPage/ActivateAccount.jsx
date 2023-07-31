@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { url } from "../../Resources/Url";
 
-function ActivateAccount() {
+function ActivateAccount({ setSnackbarState }) {
 
     const { handleSubmit, control } = useForm();
 
@@ -16,16 +16,40 @@ function ActivateAccount() {
     const [submitted, setSubmitted] = useState(false)
 
     const onSubmit = async (data) => {
-        try {
-            const response = await axios.post( url +'/auth/activateAccount', {
-                email: data.email,
-            });
-            console.log(response.data)
-            setSubmitted(true)
-        } catch (error) {
-            console.error(error)
-        }
-        
+        await axios.post(url + '/auth/activateAccount', {
+            email: data.email,
+
+        }).then((response) => {
+
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.activationLinkSent,
+                severity: "success"
+            })
+
+        }).catch((error) => {
+            let message = ""
+            switch (error.response.status) {
+                case 401:
+                    // wrong email
+                    message = "Email Doesn't Exist"
+                    break;
+                case 400:
+                    // user already activated
+                    message = error.response.data.message
+                    break;
+                default:
+                    // server error
+                    message = "Server Error"
+                    break;
+            }
+            console.log("burası")
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: message,
+                severity: "error"
+            })
+        })
     }
 
     return (
@@ -54,13 +78,12 @@ function ActivateAccount() {
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
-                    <EmailInput control={control} language={language}/>
+                    <EmailInput control={control} language={language} />
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
                         {language.activateUser}
                     </Button>
-                    {submitted && <Typography variant="h6" sx={{ mt: 1 }}>{language.activationLinkSent}</Typography>}
 
                     <Typography variant="body2" mt={1}>
                         {language.alreadyHaveAccount}{' '}

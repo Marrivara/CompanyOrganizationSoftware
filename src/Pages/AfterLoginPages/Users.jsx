@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { url } from '../../Resources/Url' 
+import { url } from '../../Resources/Url'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Alert, Box, Button, Container, IconButton, MenuItem, Skeleton, Snackbar, Stack, TablePagination, TextField, } from '@mui/material'
@@ -32,8 +32,16 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
 
     const handleChangeRowsPerPage = (event) => {
         setPageSize(parseInt(event.target.value, 10));
-        setPageNumber(0);   
+        setPageNumber(0);
     };
+
+    useEffect(() => {
+        setSnackbarState({
+            snackbarOpen: false,
+            snackbarMessage: "",
+            severity: "error"
+        })
+    })
 
     useEffect(() => {
         getUsers()
@@ -101,18 +109,18 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                     setSignedIn(false)
                 } else if (error.response.status == 400) {
                     message = "Couldn't get the users!"
-                } else {      
+                } else {
                     message = "Server problem"
                     LocalStorageDelete()
                     setSignedIn(false)
 
                 }
                 setSnackbarState({
-                    snackbarOpen:true,
-                    snackbarMessage:message,
-                    severity:"error"
+                    snackbarOpen: true,
+                    snackbarMessage: message,
+                    severity: "error"
                 })
-                
+
             })
     }
 
@@ -179,7 +187,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                     ))}
                 </TextField>
 
-                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} onUsersChange={getUsers}/> : <></>}
+                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} onUsersChange={getUsers} /> : <></>}
             </Stack>
 
             {loaded ? (

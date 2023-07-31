@@ -1,37 +1,53 @@
 import { Box, Button, Container, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import React from "react";
-import { LanguageContext } from "../../Pages/Pages";
-import EmailInput from "./EmailInput";
+import { LanguageContext } from "../Pages";
+import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { url } from "../../Resources/Url";
 
-function ForgotPassword() {
+function ForgotPassword({ setSnackbarState }) {
 
     const { handleSubmit, control } = useForm()
 
     const language = React.useContext(LanguageContext);
 
-    const [submitted, setSubmitted] = useState(false)
-
-    const [message, setMessage] = useState("")
-
     const onSubmit = async (data) => {
-        try {
-            const response = await axios.post(url +'/auth/forgotPassword', {
-                email: data.email,
-            });
-            /*Set a new message with response's message*/
-            if(response.ok == "200"){
-                setMessage(response.data.message)
-                setSubmitted(true)
+        await axios.post(url + '/auth/forgotPassword', {
+            email: data.email,
+
+        }).then((response) => {
+            if (response.status == "200") {
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: response.data.data.message,
+                    severity: "success"
+                })
             }
-        } catch (error) {
-            console.error(error)
-            setMessage(error.response.data.message)
-        }
-        
+        }).catch((error) => {
+            let message = ""
+            switch (error.response.status) {
+                case 401:
+                    // wrong email
+                    message = "Email Doesn't Exist"
+                    break;
+                case 400:
+                    // user not activated
+                    message = error.response.data.message
+                    break;
+                default:
+                    // server error
+                    message = "Server Error"
+                    break;
+            }
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: message,
+                severity: "error"
+            })
+        })
+
     }
 
     return (
@@ -60,20 +76,19 @@ function ForgotPassword() {
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
-                    <EmailInput control={control} language={language}/>
+                    <EmailInput control={control} language={language} />
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
                         {language.sendForgotPassword}
                     </Button>
-                    <Typography variant="h6" sx={{ mt: 1 }}>{message}</Typography>
                     <Typography variant="body2" mt={1}>
                         {language.alreadyHaveAccount}{' '}
                         <Link href="/">
                             {language.signIn}
                         </Link>
                     </Typography>
-                    
+
                 </Box>
             </Box>
 

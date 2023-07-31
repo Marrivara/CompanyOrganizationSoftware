@@ -89,7 +89,7 @@ export default function StickyHeadTable({ users, onUsersChange }) {
                     onUsersChange()
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 //NOT DELETED MESSAGE
                 console.log(error)
             })
@@ -132,7 +132,7 @@ export default function StickyHeadTable({ users, onUsersChange }) {
                                                             <IconButton onClick={({ }) => { openDeleteAlert(row.id) }} style={deleteButtonStyle}>
                                                                 <Delete />
                                                             </IconButton>
-                                                            <FormDialog isEdit={true} user={row} onUsersChange={onUsersChange}/>
+                                                            <FormDialog isEdit={true} user={row} onUsersChange={onUsersChange} />
                                                         </Box>
                                                     </> : <></>}
                                                 </TableCell>

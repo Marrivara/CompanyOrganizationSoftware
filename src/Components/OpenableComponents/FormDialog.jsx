@@ -103,7 +103,9 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
                 }
-            });
+            }).then((response) => {
+                onUsersChange()
+            })
             console.log(response)
         } catch (error) {
             console.error(error)
@@ -122,6 +124,8 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
                 headers: {
                     'Authorization': localStorage.getItem("userToken")
                 }
+            }).then((response) => {
+                onUsersChange()
             })
             console.log(response);
         } catch (error) {
@@ -136,7 +140,6 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
             createUser(data.email)
         }
         setOpen(false);
-        onUsersChange()
     };
 
     const handleRoleChange = (event) => {

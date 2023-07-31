@@ -6,13 +6,11 @@ import NewPasswordInput from "../../Components/InputFields/NewPasswordInput";
 import axios from "axios";
 import { url } from "../../Resources/Url";
 
-function SetNewPassword({type}) {
+function SetNewPassword({ type, setSnackbarState }) {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token');
-
-    const [password, setPassword] = useState();
 
     const language = React.useContext(LanguageContext);
 
@@ -20,24 +18,26 @@ function SetNewPassword({type}) {
 
     const [isLinkValid, setValid] = useState(false);
 
-    const [message, setMessage] = useState("");
-    const [email, setEmail] = useState();
+
 
     useEffect(() => {
         const verifyLink = async () => {
-            try {
-                const response = await axios.post( url + '/auth/' + type +"?token="+token)
-                setMessage(response.data.message)
-                setEmail(response.data.data.email)
-                if (response.status == "200") {
+            await axios.post(url + '/auth/' + type + "?token=" + token)
+                .then((response) => {
+
+                    //continue to site
                     setValid(true)
-                    console.log("validated")
-                }
-                console.log(response)
-            } catch (error) {
-                console.error(error)
-                setMessage("Api Error")
-            }
+
+                }).catch((error) => {
+                    setSnackbarState({
+                        snackbarOpen: true,
+                        snackbarMessage: "Token is not valid",
+                        severity: "error"
+                    })
+                    navigate("/")
+
+                })
+
 
 
         }
@@ -45,26 +45,32 @@ function SetNewPassword({type}) {
     })
 
     const handleFormSubmit = async (data) => {
-        
+
         if (isLinkValid) {
-            try {
-                const response = await axios.post(url + '/auth/setNewPassword', {
-                    email: email,
-                    password: data
-                });
+            await axios.post(url + '/auth/setNewPassword', {
+                token: token,
+                password: data
+            }).then((response) => {
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: "New Password Is Set",
+                    severity: "success"
+                })
                 console.log(response)
-            } catch (error) {
+            }).catch((error) => {
                 console.error(error)
-            }
-            console.log(data, email)
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: "Error Occured",
+                    severity: "error"
+                })
+            })
         }
-
-
     }
 
     return (
         <>
-            {isLinkValid ? <Container maxWidth="sm" sx={{
+            {isLinkValid && <Container maxWidth="sm" sx={{
                 display: "flex",
                 flexDirection: "column",
             }}>
@@ -91,7 +97,7 @@ function SetNewPassword({type}) {
                     </Box>
                 </Box>
 
-            </Container> : <Typography>{message}</Typography>}
+            </Container>}
         </>
 
 

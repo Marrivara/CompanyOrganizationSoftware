@@ -5,7 +5,7 @@ import { LanguageContext } from '../Pages';
 import LocalStorageDelete from '../../Resources/LocalStorageFunctions';
 import { useNavigate } from 'react-router-dom';
 
-const HomePage = ({ changeLanguage, signedIn, setSignedIn }) => {
+const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) => {
     const language = React.useContext(LanguageContext);
 
     const navigate = useNavigate()
