@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, IconButton, InputAdornment, Stack, TextField, Box, LinearProgress, Typography } from '@mui/material'
-import InfoIcon from '@mui/icons-material/Info';
+import { Button, IconButton, InputAdornment, TextField, Box} from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PasswordValidation from './PasswordValidation';
-import { HtmlTooltip } from '../ToolTip';
 import StrengthBar from './StrengthBar';
 
 const NewPasswordInput = ({ onInputChange, language }) => {
@@ -39,8 +37,9 @@ const NewPasswordInput = ({ onInputChange, language }) => {
     const calculatePasswordStrength = () => {
         if (password.length >= 12) {
             return (password.length >= 16 ? 100 : 70)
-        } else { 
-            return 50 }
+        } else {
+            return 50
+        }
     }
 
     const handleSubmit = (e) => {
@@ -92,21 +91,13 @@ const NewPasswordInput = ({ onInputChange, language }) => {
         setPasswordIsValid(checkPasswordValid(updatedValidations))
         setValidations(updatedValidations);
     }
-    
+
+    const tick = '\u2713'; // Tick mark
+    const cross = '\u2717'; // Cross mark
+
+
     return (
         <>
-            <Stack display={'flex'} alignItems={'flex-end'}>
-                <HtmlTooltip
-                    placement="bottom-end"
-                    title={
-                        <React.Fragment>
-                            <PasswordValidation validations={validations} />
-                        </React.Fragment>
-                    }
-                >
-                    <IconButton sx={{ padding: 0 }}><InfoIcon fontSize='small' /></IconButton>
-                </HtmlTooltip>
-            </Stack>
             <TextField
                 margin="dense"
                 color={inputColor}
@@ -127,12 +118,13 @@ const NewPasswordInput = ({ onInputChange, language }) => {
                         </InputAdornment>
                     ),
                 }}
-
             />
 
             <StrengthBar strength={passwordStrength} />
 
-
+            <Box bgcolor={'#cccccc'} borderRadius={2} display={'flex'} alignItems={'start'}>
+                <PasswordValidation validations={validations} />
+            </Box>
 
             <Button onClick={handleSubmit} fullWidth variant="contained" sx={{ mt: 3 }}>
                 {language.send}

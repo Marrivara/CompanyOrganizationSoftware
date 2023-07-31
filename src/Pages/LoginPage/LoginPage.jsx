@@ -1,5 +1,5 @@
-import { Box, Button, Container, Link, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Backdrop, Box, Button, CircularProgress, Container, Link, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { LanguageContext } from "../Pages";
 import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
@@ -10,28 +10,35 @@ import { useNavigate } from "react-router-dom";
 import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
 
-function LoginPage({changeLanguage , setSignedIn}) {
+function LoginPage({ changeLanguage, setSignedIn }) {
 
     const language = React.useContext(LanguageContext);
     const [loginError, setLoginError] = useState(false)
+
+    const [backdropOpen, setBackdropOpen] = React.useState(false);
+
+    const closeBackdrop = () => {
+        setBackdropOpen(false);
+    };
+    const openBackdrop = () => {
+        setBackdropOpen(true);
+    };
 
     const navigate = useNavigate()
 
     const { handleSubmit, control } = useForm();
 
     const onSubmit = async (data) => {
+        openBackdrop()
         try {
             const response = await axios.post(url + "/auth/login", {
                 email: data.email,
                 password: data.password
             });
 
-            if(response.status=="200"){
+            if (response.status == "200") {
 
                 //Might store the id's of the objects****
-
-
-
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("userToken", response.data.data.accessToken)
                 localStorage.setItem("name", response.data.data.user.name)
@@ -48,12 +55,13 @@ function LoginPage({changeLanguage , setSignedIn}) {
             console.error(error)
             setLoginError(true)
         }
+        closeBackdrop()
     }
 
 
     return (<>
         <Box display={"flex"} justifyContent={"flex-end"} marginBottom={6}>
-            <ChangeLanguageButton changeLanguage={changeLanguage}/>
+            <ChangeLanguageButton changeLanguage={changeLanguage} />
         </Box>
 
         <Container maxWidth="sm" sx={{
@@ -93,9 +101,14 @@ function LoginPage({changeLanguage , setSignedIn}) {
                     </Stack>
                 </Box>
             </Box>
-
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={backdropOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
-        </>
+    </>
     );
 }
 

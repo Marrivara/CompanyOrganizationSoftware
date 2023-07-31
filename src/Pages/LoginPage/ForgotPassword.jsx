@@ -1,5 +1,4 @@
-import { Box, Button, Container, Link, Typography } from "@mui/material";
-import { useState } from "react";
+import { Backdrop, Box, Button, CircularProgress, Container, Link, Typography } from "@mui/material";
 import React from "react";
 import { LanguageContext } from "../Pages";
 import EmailInput from "../../Components/InputFields/EmailInput";
@@ -11,9 +10,19 @@ function ForgotPassword({ setSnackbarState }) {
 
     const { handleSubmit, control } = useForm()
 
+    const [backdropOpen, setBackdropOpen] = React.useState(false);
+
+    const closeBackdrop = () => {
+        setBackdropOpen(false);
+    };
+    const openBackdrop = () => {
+        setBackdropOpen(true);
+    };
+
     const language = React.useContext(LanguageContext);
 
     const onSubmit = async (data) => {
+        openBackdrop()
         await axios.post(url + '/auth/forgotPassword', {
             email: data.email,
 
@@ -21,12 +30,13 @@ function ForgotPassword({ setSnackbarState }) {
             if (response.status == "200") {
                 setSnackbarState({
                     snackbarOpen: true,
-                    snackbarMessage: response.data.data.message,
+                    snackbarMessage: "A link has been sent",
                     severity: "success"
                 })
             }
         }).catch((error) => {
             let message = ""
+            console.log(error)
             switch (error.response.status) {
                 case 401:
                     // wrong email
@@ -47,7 +57,7 @@ function ForgotPassword({ setSnackbarState }) {
                 severity: "error"
             })
         })
-
+        closeBackdrop()
     }
 
     return (
@@ -91,7 +101,12 @@ function ForgotPassword({ setSnackbarState }) {
 
                 </Box>
             </Box>
-
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={backdropOpen}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Container>
 
     );

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import TopBar from '../../Components/TopBar/TopBar'
-import { Box, Card, CardContent, Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import { LanguageContext } from '../Pages';
 import LocalStorageDelete from '../../Resources/LocalStorageFunctions';
 import { useNavigate } from 'react-router-dom';

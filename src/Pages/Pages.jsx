@@ -38,36 +38,37 @@ function Pages() {
     };
 
     return (<>
-       
-            <LanguageContext.Provider value={languages[language]}>
-                <BrowserRouter>
-                    <Routes>
-                        <Route exact path="/home" element=
-                            {signedIn ?
-                                <HomePage changeLanguage={changeLanguage} signedIn={signedIn} setSignedIn={setSignedIn} setSnacbarState={setSnackbarState}/>
-                                :
-                                <Navigate to="/" replace />
-                            } />
-                        <Route exact path="/" element=
-                            {signedIn ? <Navigate to="/home" replace /> : <LoginPage changeLanguage={changeLanguage} setSignedIn={setSignedIn} />}
-                        />
-                        <Route path="/users" element={signedIn ? <Users setSnackbarState={setSnackbarState} changeLanguage={changeLanguage} setSignedIn={setSignedIn} /> : <Navigate to="/" replace />} />
-                        <Route path="forgotPassword" element={<ForgotPassword setSnackbarState={setSnackbarState}/>} />
-                        <Route path="activateAccount" element={<ActivateAccount setSnackbarState={setSnackbarState}/>}  />
-                        <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} setSnackbarState={setSnackbarState}/>} />
-                        <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} setSnackbarState={setSnackbarState}/>} />
-                    </Routes>
-                </BrowserRouter>
-            </LanguageContext.Provider>
 
-            <Snackbar
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                severity={snackbarState.severity}
-                autoHideDuration={2000}
-                onClose={handleClose}
-                open={snackbarState.snackbarOpen}
-            >
-                <Alert severity={snackbarState.severity}>{snackbarState.snackbarMessage}</Alert></Snackbar>
+        <LanguageContext.Provider value={languages[language]}>
+            <BrowserRouter>
+                <Routes>
+                    <Route exact path="/home" element=
+                        {signedIn ?
+                            <HomePage changeLanguage={changeLanguage} signedIn={signedIn} setSignedIn={setSignedIn} setSnacbarState={setSnackbarState} />
+                            :
+                            <Navigate to="/" replace />
+                        } />
+                    <Route exact path="/" element=
+                        {signedIn ? <Navigate to="/home" replace /> : <LoginPage changeLanguage={changeLanguage} setSignedIn={setSignedIn} />}
+                    />
+                    <Route path="/users" element={signedIn ? <Users setSnackbarState={setSnackbarState} changeLanguage={changeLanguage} setSignedIn={setSignedIn} /> : <Navigate to="/" replace />} />
+                    <Route path="forgotPassword" element={<ForgotPassword setSnackbarState={setSnackbarState} />} />
+                    <Route path="activateAccount" element={<ActivateAccount setSnackbarState={setSnackbarState} />} />
+                    <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} setSnackbarState={setSnackbarState} />} />
+                    <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} setSnackbarState={setSnackbarState} />} />
+                </Routes>
+            </BrowserRouter>
+        </LanguageContext.Provider>
+
+        <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            severity={snackbarState.severity}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            open={snackbarState.snackbarOpen}
+        >
+            <Alert severity={snackbarState.severity}>{snackbarState.snackbarMessage}</Alert>
+        </Snackbar>
     </>
     )
 

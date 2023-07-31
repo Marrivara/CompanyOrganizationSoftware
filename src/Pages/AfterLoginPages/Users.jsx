@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { url } from '../../Resources/Url'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Alert, Box, Button, Container, IconButton, MenuItem, Skeleton, Snackbar, Stack, TablePagination, TextField, } from '@mui/material'
+import { Box, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import FormDialog from '../../Components/OpenableComponents/FormDialog'
 import { LanguageContext } from '../Pages'
@@ -203,7 +203,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                             onRowsPerPageChange={handleChangeRowsPerPage}
                             labelRowsPerPage={language.homePage.rowsPerPage}
                             labelDisplayedRows={({ from, to, count }) =>
-                                `${from}-${to}`
+                                `${from}-${to}:${count}`
                             }
 
                         />
@@ -225,19 +225,6 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                 </Container>
             )
             }
-
-
-            {/*<Snackbar
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                severity
-                autoHideDuration={5000}
-                open={snackbarOpen}
-                onClose={handleClose}
-
-
-            >
-                <Alert severity={severity}>{snackbarMessage}</Alert>
-            </Snackbar>*/}
         </Container>
     </>
     )

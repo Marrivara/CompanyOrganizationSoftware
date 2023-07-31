@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Alert, Box, Container, Snackbar, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { LanguageContext } from "../Pages";
@@ -19,45 +19,52 @@ function SetNewPassword({ type, setSnackbarState }) {
     const [isLinkValid, setValid] = useState(false);
 
 
+    const verifyLink = async () => {
+        await axios.post(url + '/auth/' + type + "?token=" + localStorage.getItem("passwordToken"))
+            .then((response) => {
+
+                //continue to site
+                setValid(true)
+                console.log(response)
+
+            }).catch((error) => {
+                console.log(error)
+                /*
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: "Token is not valid",
+                    severity: "error"
+                })*/
+                navigate("/")
+            })
+    }
 
     useEffect(() => {
-        const verifyLink = async () => {
-            await axios.post(url + '/auth/' + type + "?token=" + token)
-                .then((response) => {
-
-                    //continue to site
-                    setValid(true)
-
-                }).catch((error) => {
-                    setSnackbarState({
-                        snackbarOpen: true,
-                        snackbarMessage: "Token is not valid",
-                        severity: "error"
-                    })
-                    navigate("/")
-
-                })
-
-
-
-        }
+        localStorage.setItem("passwordToken" , token)
         verifyLink()
+
     })
 
     const handleFormSubmit = async (data) => {
 
         if (isLinkValid) {
             await axios.post(url + '/auth/setNewPassword', {
+
                 token: token,
                 password: data
+            
             }).then((response) => {
+
+                console.log(response)
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "New Password Is Set",
                     severity: "success"
                 })
                 console.log(response)
+
             }).catch((error) => {
+
                 console.error(error)
                 setSnackbarState({
                     snackbarOpen: true,
@@ -65,39 +72,43 @@ function SetNewPassword({ type, setSnackbarState }) {
                     severity: "error"
                 })
             })
+            localStorage.removeItem("passwordToken")
         }
     }
 
     return (
         <>
-            {isLinkValid && <Container maxWidth="sm" sx={{
-                display: "flex",
-                flexDirection: "column",
-            }}>
-
-                <Box sx={{
-                    bgcolor: '#CFE0FE',
-                    boxShadow: 5,
-                    borderRadius: 3,
-                    px: 5,
-                    py: 6,
-                    marginTop: 4,
+            {isLinkValid && <>
+                <Container maxWidth="sm" sx={{
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "center",
                 }}>
-                    <Box sx={{
-                        py: 1,
-                        px: 1,
-                    }}>
-                        <Typography variant="h3" >{language.setNewPassword}</Typography>
-                    </Box>
-                    <Box component="form" noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
-                        <NewPasswordInput onInputChange={handleFormSubmit} language={language} />
-                    </Box>
-                </Box>
 
-            </Container>}
+                    <Box sx={{
+                        bgcolor: '#CFE0FE',
+                        boxShadow: 5,
+                        borderRadius: 3,
+                        px: 5,
+                        py: 6,
+                        marginTop: 4,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}>
+                        <Box sx={{
+                            py: 1,
+                            px: 1,
+                        }}>
+                            <Typography variant="h3" >{language.setNewPassword}</Typography>
+                        </Box>
+                        <Box component="form" noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
+                            <NewPasswordInput onInputChange={handleFormSubmit} language={language} />
+                        </Box>
+                    </Box>
+
+                </Container>
+            </>
+            }
         </>
 
 
