@@ -5,9 +5,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import { LanguageContext } from '../../Pages/Pages';
 export default function DeleteAlert({ open, handleClose}) {
 
+    const language = React.useContext(LanguageContext)
 
     return (
         <div>
@@ -18,18 +19,16 @@ export default function DeleteAlert({ open, handleClose}) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    "Delete The User?"
+                    {language.deleteAlert.deleteTheUser}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this user?
+                        {language.deleteAlert.text}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => { handleClose(false) }}>Cancel</Button>
-                    <Button onClick={() => { handleClose(true) }} autoFocus>
-                        Yes
-                    </Button>
+                    <Button onClick={() => { handleClose(false) }}>{language.deleteAlert.cancel}</Button>
+                    <Button onClick={() => { handleClose(true) }} autoFocus>{language.deleteAlert.yes}</Button>
                 </DialogActions>
             </Dialog>
         </div>

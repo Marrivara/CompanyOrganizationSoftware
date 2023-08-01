@@ -5,8 +5,9 @@ import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { url } from "../../Resources/Url";
+import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
-function ForgotPassword({ setSnackbarState }) {
+function ForgotPassword({ changeLanguage, setSnackbarState }) {
 
     const { handleSubmit, control } = useForm()
 
@@ -30,25 +31,24 @@ function ForgotPassword({ setSnackbarState }) {
             if (response.status == "200") {
                 setSnackbarState({
                     snackbarOpen: true,
-                    snackbarMessage: "A link has been sent",
+                    snackbarMessage: language.snackbarMessages.linkSent,
                     severity: "success"
                 })
             }
         }).catch((error) => {
             let message = ""
-            console.log(error)
             switch (error.response.status) {
-                case 401:
+                case 404:
                     // wrong email
-                    message = "Email Doesn't Exist"
+                    message = language.snackbarMessages.emailNotExists
                     break;
                 case 400:
                     // user not activated
-                    message = error.response.data.message
+                    message = language.snackbarMessages.userNotActivated
                     break;
                 default:
                     // server error
-                    message = "Server Error"
+                    message = language.snackbarMessages.serverProblem
                     break;
             }
             setSnackbarState({
@@ -60,8 +60,10 @@ function ForgotPassword({ setSnackbarState }) {
         closeBackdrop()
     }
 
-    return (
-
+    return (<>
+        <Box display={"flex"} justifyContent={"flex-end"} marginBottom={6}>
+            <ChangeLanguageButton changeLanguage={changeLanguage} />
+        </Box>
         <Container maxWidth="sm" sx={{
             display: "flex",
             flexDirection: "column",
@@ -108,6 +110,7 @@ function ForgotPassword({ setSnackbarState }) {
                 <CircularProgress color="inherit" />
             </Backdrop>
         </Container>
+    </>
 
     );
 }

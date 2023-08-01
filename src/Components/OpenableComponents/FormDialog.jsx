@@ -14,10 +14,11 @@ import { Edit } from '@mui/icons-material';
 import { LanguageContext } from '../../Pages/Pages';
 import { useForm } from 'react-hook-form';
 import EmailInput from '../InputFields/EmailInput';
+import NormalInput from '../InputFields/NormalInput';
 
 
 
-export default function FormDialog({ isEdit, user , onUsersChange}) {
+export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarState }) {
     const [open, setOpen] = useState(false);
     const [loaded, setLoaded] = useState(false)
     const [name, setName] = useState(isEdit ? user.name : "");
@@ -36,7 +37,6 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
     const { handleSubmit, control } = useForm();
 
     const handleClickOpen = () => {
-
         setOpen(true);
         getCompaniesAndRoles()
         if (isEdit) {
@@ -51,9 +51,7 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
 
     useEffect(() => {
         if (open) {
-            console.log("ikinci")
             if ((company != "") & !isEdit) {
-                console.log(company)
                 getDepartments(company.id)
             }
         }
@@ -61,83 +59,116 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
     }, [company])
 
     const getCompaniesAndRoles = async () => {
-        try {
-            const response = await axios.get(url + '/users/roles-and-companies', {
-                headers: {
-                    'Authorization': localStorage.getItem("userToken")
-                }
-            });
-            console.log(response)
+        await axios.get(url + '/users/roles-and-companies', {
+            headers: {
+                'Authorization': localStorage.getItem("userToken"),
+                'Accept-Language': language.language
+            }
+        }).then((response) => {
             setCompanies(response.data.data.companies);
             setRoles(response.data.data.roles);
-        } catch (error) {
-            console.error('Error while getting companies and roles:', error);
-        }
+        }).catch((error) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.getRoleAndCompError,
+                severity: "error"
+            })
+        });
     };
 
     const getDepartments = async (id) => {
-        try {
-            const response = await axios.get(url + '/users/departments/' + id, {
-                headers: {
-                    'Authorization': localStorage.getItem("userToken")
-                }
-            });
+        await axios.get(url + '/users/departments/' + id, {
+            headers: {
+                'Authorization': localStorage.getItem("userToken"),
+                'Accept-Language': language.language
+            }
+        }).then((response) => {
             setDepartments(response.data.data);
-        } catch (error) {
-            console.error('Error while getting departments:', error);
-        }
+        }).catch((error) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.getDepartmantsError,
+                severity: "error"
+            })
+        });
+
     };
 
     const language = React.useContext(LanguageContext)
 
-    const createUser = async (email) => {
-        try {
-            const response = await axios.post(url + "/users/create", {
-                name: name,
-                surname: surname,
-                email: email,
-                roleId: role.id,
-                departmentId: department.id,
-                companyId: company.id
-            }, {
-                headers: {
-                    'Authorization': localStorage.getItem("userToken")
-                }
-            }).then((response) => {
-                onUsersChange()
+    const createUser = async (data) => {
+
+        await axios.post(url + "/users/create", {
+            name: data.name,
+            surname: data.surname,
+            email: data.email,
+            roleId: role.id,
+            departmentId: department.id,
+            companyId: company.id
+        }, {
+            headers: {
+                'Authorization': localStorage.getItem("userToken"),
+                'Accept-Language': language.language
+            }
+        }).then((response) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.userAdded,
+                severity: "success"
             })
-            console.log(response)
-        } catch (error) {
-            console.error(error)
-        }
+            onUsersChange()
+        }).catch((error) => {
+            let message = ""
+            if (error.response.status == 400) {
+                message = language.snackbarMessages.emailExists
+            } else {
+                message = language.snackbarMessages.userAddError
+            }
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: message,
+                severity: "error"
+            })
+        })
     }
-    const updateUser = async (email) => {
-        try {
-            const response = await axios.put(url + "/users/" + user.id, {
-                name: name,
-                surname: surname,
-                email: email,
-                roleId: role.id,
-                departmentId: department.id,
-                companyId: company.id
-            }, {
-                headers: {
-                    'Authorization': localStorage.getItem("userToken")
-                }
-            }).then((response) => {
-                onUsersChange()
+    const updateUser = async (data) => {
+
+        await axios.put(url + "/users/" + user.id, {
+            name: data.name,
+            surname: data.surname,
+            email: data.email,
+            roleId: role.id,
+            departmentId: department.id,
+            companyId: company.id
+        }, {
+            headers: {
+                'Authorization': localStorage.getItem("userToken"),
+                'Accept-Language': language.language
+            }
+        }).then((response) => {
+            onUsersChange()
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.userUpdated,
+                severity: "success"
             })
-            console.log(response);
-        } catch (error) {
-            console.error(error)
-        }
+            
+        }).catch((error) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.updateUserError,
+                severity: "error"
+            })
+        })
+
     }
 
     const onSubmit = (data) => {
+        
         if (isEdit) {
-            updateUser(data.email)
+            updateUser(data)
         } else {
-            createUser(data.email)
+            createUser(data)
         }
         setOpen(false);
     };
@@ -154,6 +185,10 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
         const selectedDepartment = departments.find(x => x.id === event.target.value);
         setDepartment(selectedDepartment);
     };
+
+    const checkIfInputsValid = () => {
+
+    }
 
 
     const handleClose = () => {
@@ -180,35 +215,14 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
                         <DialogContentText>
                             {isEdit ? language.formDialog.editUserDetail : language.formDialog.addUserDetail}
                         </DialogContentText>
-                        <TextField
-                            autoFocus
-                            defaultValue={name}
-                            margin="dense"
-                            id="name"
-                            label={language.formDialog.name}
-                            required
-                            fullWidth
-                            variant="standard"
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="surname"
-                            label="Surname"
-                            type="surname"
-                            fullWidth
-                            variant="standard"
-                            value={surname}
-                            required
-                            onChange={(e) => setSurname(e.target.value)}
-                        />
+                        <NormalInput name={'name'} label={language.formDialog.name} control={control} defaultValue={name} variant={"standard"} />
+                        <NormalInput name={'surname'} label={language.formDialog.surname} control={control} defaultValue={surname} variant={"standard"} />
                         <EmailInput control={control} language={language} defaultValue={email} variant={'standard'} />
                         <TextField
                             id="role"
                             margin="dense"
                             select
-                            label="Role"
+                            label={language.formDialog.role}
                             fullWidth
                             defaultValue={loaded ? role.id : ""}
                             variant="outlined"
@@ -226,7 +240,7 @@ export default function FormDialog({ isEdit, user , onUsersChange}) {
                             id="company"
                             margin="dense"
                             select
-                            label="Company"
+                            label={language.formDialog.company}
                             defaultValue={loaded ? company.id : ""}
                             fullWidth
                             variant="outlined"

@@ -3,8 +3,11 @@ import { Button, IconButton, InputAdornment, TextField, Box} from '@mui/material
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PasswordValidation from './PasswordValidation';
 import StrengthBar from './StrengthBar';
+import { LanguageContext } from '../../Pages/Pages';
 
-const NewPasswordInput = ({ onInputChange, language }) => {
+const NewPasswordInput = ({ onInputChange}) => {
+
+    const language = React.useContext(LanguageContext)
 
     const [password, setPassword] = useState();
     const [inputColor, setInputColor] = useState('primary');

@@ -1,4 +1,5 @@
 const en = {
+    language: "en-EN",
     signIn: "Sign In",
     email: "Email Address",
     password: "Password",
@@ -14,6 +15,39 @@ const en = {
     emailRequired: "Email is required!",
     passwordRequired: "Password is required",
     wrongEmail: "Please enter a valid email address",
+    asc: "Ascendemt",
+    desc: "Descendent",
+    userAttributes:{
+        name:"Name",
+        surname: "Surname",
+        email: "Email",
+        company: "Company",
+        department:"Department",
+        role: "Role",
+        date: "Date"
+    },
+    snackbarMessages:{
+        userDeleted: "User Deleted",
+        deletedError: "Error while deleting the user!",
+        getRoleAndCompError: "Error while getting companies and roles!",
+        getDepartmentsError: "Error while getting departments!",
+        userAdded: "User Added!",
+        userAddError: "Error while adding User!",
+        userUpdated: "User Updated!",
+        updateUserError: "Error while updating the User!",
+        emailExists: "Email already exists",
+        unauthorized: "Unauthorized",
+        getUsersBadRequest: "Couldn't get the users!",
+        getUsersNotFound: "Couldn't find any user!",
+        serverProblem :"Server Problem",
+        emailNotExists: "Email Doesn't Exists",
+        userAlreadyActivated: "User Already Activated",
+        linkSent: "A link has been sent",
+        userNotActivated: "User is not Activated!",
+        loginSuccessful: "Login Successful",
+        loginError: "Email or password is wrong"
+
+    },
     passwordValidation:{
         length: "Password length should be between 8 and 32.",
         upperCase: "Password should contain uppercase letter!",
@@ -40,15 +74,35 @@ const en = {
         editUser: "Edit the User",
         editUserDetail: "To edit the user, please fill out this form.",
         name: "Name",
+        surname: "Surname",
         email: "Email Address",
+        company: "Company",
+        role: "Role",
         department: "Department",
         cancel: "Cancel",
         submit: "Submit"
+    },
+    strengthBar:{
+        notValid: "Not Valid",
+        weak: "Weak",
+        good: "Good",
+        strong: "Strong"
+    },
+    deleteAlert:{
+        deleteTheUser: "Delete The User?",
+        text: "Are you sure you want to delete this user?",
+        cancel: "Cancel",
+        yes: "Yes",
+    },
+    openableDrawer:{
+        homePage: "HomePage",
+        users: "Users"
     }
 
 };
 
 const tr = {
+    language: "tr-TR",
     signIn: "Giriş Yap",
     email: "E-posta Adresi",
     password: "Şifre",
@@ -64,6 +118,39 @@ const tr = {
     emailRequired: "Eposta boş kalamaz",
     passwordRequired: "Şifre boş kalamaz",
     wrongEmail: "Geçerli bir eposta adresi girin",
+    asc: "Artan",
+    desc:"Azalan",
+    userAttributes:{
+        name:"İsim",
+        surname: "Soyisim",
+        email: "Eposta",
+        company: "Şirket",
+        department:"Departman",
+        role: "Rol",
+        date: "Tarih",
+    },
+    snackbarMessages:{
+        userDeleted: "Kullanıcı Silindi",
+        deletedError: "Kullanıcıyı silerken bir hata oluştu.",
+        getRoleAndCompError: "Rol ve Şirketleri alırken bir hata oluştu",
+        getDepartmentsError: "Departmanları alırken bir hata oluştu",
+        userAdded: "Kullanıcı Eklendi!",
+        userAddError: "Kullanıcı eklenirken bir sorun oluştu!",
+        userUpdated: "Kullanıcı Güncellendi",
+        updateUserError: "Kullanıcı güncellenirken bir hata oluştu!",
+        emailExists: "Eposta zaten kullanımda",
+        unauthorized: "İzin Verilmedi",
+        getUsersBadRequest: "Herhangi bir kullanıcı getirilemedi!",
+        getUsersNotFound: "Herhangi bir kullanıcı bulunamadı!",
+        serverProblem :"Sunucu Hatası",
+        emailNotExists: "Böyle bir e-posta bulunamadı",
+        userAlreadyActivated: "Kullanıcı zaten aktif",
+        linkSent: "Link e-posta adresine gönderildi",
+        userNotActivated: "Kullanıcı aktif değil",
+        loginSuccessful: "Giriş Yapıldı",
+        loginError: "E-posta ya da şifre yanlış"
+
+    },
     passwordValidation:{
         length: "Şifrenin uzunluğu 8 ile 32 arasında olmalıdır.",
         upperCase: "Şifre büyük karakter içermelidir.",
@@ -89,11 +176,30 @@ const tr = {
         addUserDetail: "Yeni bir kullanıcı eklemek için lütfen formu doldurunuz.",
         editUser: "Kullanıcıyı düzenle",
         editUserDetail: "Kullanıcıyı düzenlemek için lütfen formu doldurunuz.",
-        name: "İsim Soyisim",
+        name: "İsim",
+        surname: "Soyisim",
         email: "E-posta Adresi",
+        company: "Şirket",
+        role: "Rol",
         department: "Departman",
         cancel: "Vazgeç",
         submit: "Gönder"
+    },
+    strengthBar:{
+        notValid: "Geçerli Değil",
+        weak: "Zayıf",
+        good: "İyi",
+        strong: "Güçlü"
+    },
+    deleteAlert:{
+        deleteTheUser: "Kullancı Silinsin mi",
+        text: "Bu kullanıcıyı silmek istediğinize emin misiniz?",
+        cancel: "Vazgeç",
+        yes: "Evet",
+    },
+    openableDrawer:{
+        homePage: "Anasayfa",
+        users: "Kullanıcılar"
     }
 
 

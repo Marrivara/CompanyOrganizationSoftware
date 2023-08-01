@@ -5,8 +5,9 @@ import { LanguageContext } from "../Pages";
 import NewPasswordInput from "../../Components/InputFields/NewPasswordInput";
 import axios from "axios";
 import { url } from "../../Resources/Url";
+import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
-function SetNewPassword({ type, setSnackbarState }) {
+function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -18,32 +19,35 @@ function SetNewPassword({ type, setSnackbarState }) {
 
     const [isLinkValid, setValid] = useState(false);
 
+    const [message, setMessage] = useState("")
+
 
     const verifyLink = async () => {
-        await axios.post(url + '/auth/' + type + "?token=" + localStorage.getItem("passwordToken"))
+        await axios.post(url + '/auth/' + type + "?token=" + token)
             .then((response) => {
 
                 //continue to site
                 setValid(true)
-                console.log(response)
+                setMessage("Token is Valid")
+                //console.log(response)
 
             }).catch((error) => {
-                console.log(error)
+                //setMessage("Wrong token")
                 /*
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "Token is not valid",
                     severity: "error"
                 })*/
-                navigate("/")
+                //navigate("/")
             })
     }
 
     useEffect(() => {
-        localStorage.setItem("passwordToken" , token)
+
         verifyLink()
 
-    })
+    }, [])
 
     const handleFormSubmit = async (data) => {
 
@@ -52,7 +56,7 @@ function SetNewPassword({ type, setSnackbarState }) {
 
                 token: token,
                 password: data
-            
+
             }).then((response) => {
 
                 console.log(response)
@@ -61,16 +65,18 @@ function SetNewPassword({ type, setSnackbarState }) {
                     snackbarMessage: "New Password Is Set",
                     severity: "success"
                 })
-                console.log(response)
+                setMessage("Password has changed")
+                navigate("/")
 
             }).catch((error) => {
-
+                setMessage("Password didnt change")
                 console.error(error)
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "Error Occured",
                     severity: "error"
                 })
+                navigate("/")
             })
             localStorage.removeItem("passwordToken")
         }
@@ -79,6 +85,9 @@ function SetNewPassword({ type, setSnackbarState }) {
     return (
         <>
             {isLinkValid && <>
+                <Box display={"flex"} justifyContent={"flex-end"} marginBottom={6}>
+                    <ChangeLanguageButton changeLanguage={changeLanguage} />
+                </Box>
                 <Container maxWidth="sm" sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -102,7 +111,7 @@ function SetNewPassword({ type, setSnackbarState }) {
                             <Typography variant="h3" >{language.setNewPassword}</Typography>
                         </Box>
                         <Box component="form" noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
-                            <NewPasswordInput onInputChange={handleFormSubmit} language={language} />
+                            <NewPasswordInput onInputChange={handleFormSubmit} />
                         </Box>
                     </Box>
 

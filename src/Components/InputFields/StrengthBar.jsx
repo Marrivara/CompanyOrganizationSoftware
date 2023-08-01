@@ -1,7 +1,10 @@
 import { Box, LinearProgress, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { LanguageContext } from '../../Pages/Pages';
 
 const StrengthBar = ({ strength }) => {
+
+    const language = React.useContext(LanguageContext)
 
     const [text, setText] = useState("Very Weak");
     const [color, setColor] = useState("error");
@@ -9,19 +12,19 @@ const StrengthBar = ({ strength }) => {
     useEffect(() => {
         switch (strength) {
             case 0:
-                setText("Not Valid")
+                setText(language.strengthBar.notValid)
                 setColor("error")
                 break;
             case 50:
-                setText("Weak")
+                setText(language.strengthBar.weak)
                 setColor("warning")
                 break;
             case 70:
-                setText("Good")
+                setText(language.strengthBar.good)
                 setColor("success")
                 break;
             case 100:
-                setText("Strong")
+                setText(language.strengthBar.strong)
                 setColor("success")
                 break;
         }

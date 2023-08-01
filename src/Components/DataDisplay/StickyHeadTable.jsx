@@ -13,45 +13,51 @@ import { Delete } from '@mui/icons-material';
 import FormDialog from '../OpenableComponents/FormDialog';
 import DeleteAlert from '../OpenableComponents/DeleteAlert';
 import { useState } from 'react';
+import { LanguageContext } from '../../Pages/Pages';
 
 
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 130 },
-    { id: 'surname', label: 'Surname', minWidth: 130 },
-    {
-        id: 'email',
-        label: 'Email',
-        minWidth: 170,
-    },
-    {
-        id: 'department',
-        label: 'Department',
-        type: 'nested',
-        minWidth: 100,
-    },
-    {
-        id: 'role',
-        label: 'Role',
-        type: 'nested',
-        minWidth: 50,
-    },
-    {
-        id: 'company',
-        label: 'Company',
-        type: 'nested',
-        minWidth: 50,
-    },
-    {
-        id: "buttons",
-        label: "",
-        type: "buttons",
-        minWidth: 0
-    }
 
 
-];
+export default function StickyHeadTable({ users, onUsersChange, setSnackbarState }) {
 
-export default function StickyHeadTable({ users, onUsersChange }) {
+    const language = React.useContext(LanguageContext);
+
+
+    const columns = [
+        { id: 'name', label: language.userAttributes.name , minWidth: 130 },
+        { id: 'surname', label: language.userAttributes.surname, minWidth: 130 },
+        {
+            id: 'email',
+            label: language.userAttributes.email,
+            minWidth: 170,
+        },
+        {
+            id: 'company',
+            label: language.userAttributes.company,
+            type: 'nested',
+            minWidth: 50,
+        },
+        {
+            id: 'department',
+            label: language.userAttributes.department,
+            type: 'nested',
+            minWidth: 100,
+        },
+        {
+            id: 'role',
+            label: language.userAttributes.role,
+            type: 'nested',
+            minWidth: 50,
+        },
+        {
+            id: "buttons",
+            label: "",
+            type: "buttons",
+            minWidth: 0
+        }
+    
+    
+    ];
 
     const deleteButtonStyle = {
         backgroundColor: '#f44336',
@@ -79,20 +85,25 @@ export default function StickyHeadTable({ users, onUsersChange }) {
     const deleteUser = () => {
         axios.delete(url + "/users/" + userIdToDelete, {
             headers: {
-                'Authorization': localStorage.getItem("userToken")
+                'Authorization': localStorage.getItem("userToken"),
+                'Accept-Language': language.language
             }
+        }).then((response) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.userDeleted,
+                severity: "success"
+            })
+            onUsersChange()
+
+        }).catch((error) => {
+            setSnackbarState({
+                snackbarOpen: true,
+                snackbarMessage: language.snackbarMessages.deletedError,
+                severity: "error"
+            })
+            console.log(error)
         })
-            .then((response) => {
-                if (response.status == "200") {
-                    //DELETED MESSAGE
-                    console.log(response)
-                    onUsersChange()
-                }
-            })
-            .catch((error) => {
-                //NOT DELETED MESSAGE
-                console.log(error)
-            })
     }
 
     const allowed = localStorage.getItem("role") == "Admin";
@@ -132,7 +143,7 @@ export default function StickyHeadTable({ users, onUsersChange }) {
                                                             <IconButton onClick={({ }) => { openDeleteAlert(row.id) }} style={deleteButtonStyle}>
                                                                 <Delete />
                                                             </IconButton>
-                                                            <FormDialog isEdit={true} user={row} onUsersChange={onUsersChange} />
+                                                            <FormDialog isEdit={true} user={row} onUsersChange={onUsersChange} setSnackbarState={setSnackbarState} />
                                                         </Box>
                                                     </> : <></>}
                                                 </TableCell>

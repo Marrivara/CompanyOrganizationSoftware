@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { url } from '../../Resources/Url'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Box, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
+import { Box, Button, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import FormDialog from '../../Components/OpenableComponents/FormDialog'
 import { LanguageContext } from '../Pages'
@@ -41,7 +41,8 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
             snackbarMessage: "",
             severity: "error"
         })
-    })
+    }, [])
+
 
     useEffect(() => {
         getUsers()
@@ -50,31 +51,31 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
 
     const sortFields = [
         {
+            value: 'id',
+            label: language.userAttributes.date,
+        },
+        {
             value: 'name',
-            label: 'Name',
+            label: language.userAttributes.name,
         },
         {
             value: 'surname',
-            label: 'Surname',
+            label: language.userAttributes.surname,
         },
         {
             value: 'department',
-            label: 'Department',
-        },
-        {
-            value: 'id',
-            label: 'Date',
+            label: language.userAttributes.department,
         },
 
     ];
     const sortOrders = [
         {
             value: 'asc',
-            label: 'Ascendent',
+            label: language.asc,
         },
         {
             value: 'desc',
-            label: 'Descendent',
+            label: language.desc,
         },
     ];
 
@@ -87,12 +88,12 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
 
     };
 
-
     const getUsers = () => {
         axios.get(url + "/users/all?" + new URLSearchParams(params).toString(),
             {
                 headers: {
-                    'Authorization': localStorage.getItem("userToken")
+                    'Authorization': localStorage.getItem("userToken"),
+                    'Accept-Language': language.language,
                 }
             })
             .then((response) => {
@@ -103,17 +104,30 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
             })
             .catch((error) => {
                 let message = ""
-                if (error.response.status == 401) {
-                    message = "Unauthorized"
-                    LocalStorageDelete()
-                    setSignedIn(false)
-                } else if (error.response.status == 400) {
-                    message = "Couldn't get the users!"
-                } else {
-                    message = "Server problem"
-                    LocalStorageDelete()
-                    setSignedIn(false)
+                switch (error.response.status) {
+                    case 401:
+                        message = language.snackbarMessages.unathorized
+                        LocalStorageDelete()
+                        setSignedIn(false)
+                        break;
+                        
+                    case 400:
+                        message = language.snackbarMessages.getUsersBadRequest
+                        setLength(0)
+                        setUsers([])
+                        break;
 
+                    case 404:
+                        message = language.snackbarMessages.getUsersNotFound
+                        setLength(0)
+                        setUsers([])
+                        break;
+
+                    default:
+                        message = language.snackbarMessages.serverProblem
+                        LocalStorageDelete()
+                        setSignedIn(false)
+                        break;
                 }
                 setSnackbarState({
                     snackbarOpen: true,
@@ -187,12 +201,12 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                     ))}
                 </TextField>
 
-                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} onUsersChange={getUsers} /> : <></>}
+                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} /> : <></>}
             </Stack>
 
             {loaded ? (
                 <>
-                    <StickyHeadTable users={users} onUsersChange={getUsers} />
+                    <StickyHeadTable users={users} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
                     <Box display={'flex'} justifyContent={'center'}>
                         <TablePagination
                             component="div"

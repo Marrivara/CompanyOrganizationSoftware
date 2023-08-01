@@ -15,6 +15,7 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) =
     const email = localStorage.getItem("email")
     const department = localStorage.getItem("department")
     const role = localStorage.getItem("role")
+    const company = localStorage.getItem("company")
 
     useEffect(() => {
         checkUser()
@@ -24,10 +25,9 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) =
         if (!signedIn) {
             LocalStorageDelete()
             setSignedIn(false)
-            //navigate("/")
         }
     }
-    
+
 
     return (
         <>
@@ -48,7 +48,7 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) =
                         marginBottom: 2,
                         display: "flex",
                         flexDirection: "column",
-                        
+
                     }}>
                     <Box display={'flex'} margin={3} justifyContent={'center'} >
                         <Typography variant="h3" >
@@ -58,14 +58,18 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) =
 
                     <Box>
                         <Typography variant="body1" gutterBottom>
-                            Email: {email}
+                            {language.userAttributes.email} : {email}
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            Department: {department}
+                            {language.userAttributes.company} : {company}
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            Role: {role}
+                            {language.userAttributes.department} : {department}
                         </Typography>
+                        <Typography variant="body1" gutterBottom>
+                            {language.userAttributes.role}: {role}
+                        </Typography>
+
 
                     </Box>
                 </Box>

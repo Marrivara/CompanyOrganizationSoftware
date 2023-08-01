@@ -6,8 +6,9 @@ import EmailInput from "../../Components/InputFields/EmailInput";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { url } from "../../Resources/Url";
+import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
-function ActivateAccount({ setSnackbarState }) {
+function ActivateAccount({ changeLanguage, setSnackbarState }) {
 
     const { handleSubmit, control } = useForm();
 
@@ -41,20 +42,19 @@ function ActivateAccount({ setSnackbarState }) {
         }).catch((error) => {
             let message = ""
             switch (error.response.status) {
-                case 401:
+                case 404:
                     // wrong email
-                    message = "Email Doesn't Exist"
+                    message = language.snackbarMessages.emailNotExists
                     break;
                 case 400:
                     // user already activated
-                    message = error.response.data.message
+                    message = language.snackbarMessages.userAlreadyActivated
                     break;
                 default:
                     // server error
-                    message = "Server Error"
+                    message = language.snackbarMessages.serverProblem
                     break;
             }
-            console.log("burası")
             setSnackbarState({
                 snackbarOpen: true,
                 snackbarMessage: message,
@@ -64,8 +64,10 @@ function ActivateAccount({ setSnackbarState }) {
         closeBackdrop()
     }
 
-    return (
-
+    return (<>
+        <Box display={"flex"} justifyContent={"flex-end"} marginBottom={6}>
+            <ChangeLanguageButton changeLanguage={changeLanguage} />
+        </Box>
         <Container maxWidth="sm" sx={{
             display: "flex",
             flexDirection: "column",
@@ -114,7 +116,7 @@ function ActivateAccount({ setSnackbarState }) {
                 <CircularProgress color="inherit" />
             </Backdrop>
         </Container>
-
+    </>
     );
 }
 

@@ -3,24 +3,24 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 
-const EmailInput = ({control, language, defaultValue, variant}) => {
+const NormalInput = ({control, defaultValue, variant, name, label}) => {
  
 
   return (
     <Controller
-        name="email"
+        name={name}
         control={control}
         defaultValue={defaultValue}
-        rules={{ required: language.emailRequired , minLength:4, pattern: {value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: language.wrongEmail}}}
+        rules={{ required: "Required" }}
         render={({ field, fieldState }) => (
           <TextField
-            margin='normal'
+            margin='dense'
             color='primary'
             required
             autoFocus
-            id='email'
-            name='email'
-            label={language.email}
+            id={name}
+            name={name}
+            label={label}
             fullWidth
             variant={variant}
             error={!!fieldState.error}
@@ -32,4 +32,4 @@ const EmailInput = ({control, language, defaultValue, variant}) => {
   );
 };
 
-export default EmailInput;
+export default NormalInput;

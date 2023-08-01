@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
 
-function LoginPage({ changeLanguage, setSignedIn }) {
+function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
 
     const language = React.useContext(LanguageContext);
     const [loginError, setLoginError] = useState(false)
@@ -30,14 +30,11 @@ function LoginPage({ changeLanguage, setSignedIn }) {
 
     const onSubmit = async (data) => {
         openBackdrop()
-        try {
-            const response = await axios.post(url + "/auth/login", {
+  
+            await axios.post(url + "/auth/login", {
                 email: data.email,
                 password: data.password
-            });
-
-            if (response.status == "200") {
-
+            }).then((response) =>{
                 //Might store the id's of the objects****
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("userToken", response.data.data.accessToken)
@@ -47,14 +44,22 @@ function LoginPage({ changeLanguage, setSignedIn }) {
                 localStorage.setItem("email", response.data.data.user.email)
                 localStorage.setItem("department", response.data.data.user.department.name)
                 localStorage.setItem("company", response.data.data.user.company.name)
-                console.log(response)
                 setSignedIn(true)
                 setLoginError(false)
-            }
-        } catch (error) {
-            console.error(error)
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: language.snackbarMessages.loginSuccessful,
+                    severity: "success"
+                })
+
+            }).catch((error) =>{
+                setSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: language.snackbarMessages.loginError,
+                    severity: "error"
+                })
             setLoginError(true)
-        }
+            });
         closeBackdrop()
     }
 
