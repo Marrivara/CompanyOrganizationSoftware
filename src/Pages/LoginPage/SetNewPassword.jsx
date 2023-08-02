@@ -32,14 +32,14 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
                 //console.log(response)
 
             }).catch((error) => {
-                //setMessage("Wrong token")
-                /*
+            setMessage("Wrong token")
+                
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "Token is not valid",
                     severity: "error"
-                })*/
-                //navigate("/")
+                })
+                navigate("/")
             })
     }
 
