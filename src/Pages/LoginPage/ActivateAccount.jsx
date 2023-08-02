@@ -23,8 +23,6 @@ function ActivateAccount({ changeLanguage, setSnackbarState }) {
 
     const language = React.useContext(LanguageContext);
 
-    const [submitted, setSubmitted] = useState(false)
-
     const onSubmit = async (data) => {
         openBackdrop()
 
@@ -35,7 +33,7 @@ function ActivateAccount({ changeLanguage, setSnackbarState }) {
 
             setSnackbarState({
                 snackbarOpen: true,
-                snackbarMessage: language.activationLinkSent,
+                snackbarMessage: language.loginPages.activationLinkSent,
                 severity: "success"
             })
 
@@ -88,7 +86,7 @@ function ActivateAccount({ changeLanguage, setSnackbarState }) {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h3" >{language.activateAccount}</Typography>
+                    <Typography variant="h3" >{language.loginPages.activateAccount}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
@@ -96,13 +94,13 @@ function ActivateAccount({ changeLanguage, setSnackbarState }) {
 
 
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        {language.activateUser}
+                        {language.loginPages.activateUser}
                     </Button>
 
                     <Typography variant="body2" mt={1}>
-                        {language.alreadyHaveAccount}{' '}
+                        {language.loginPages.alreadyHaveAccount}{' '}
                         <Link href="/">
-                            {language.signIn}
+                            {language.loginPages.signIn}
                         </Link>
                     </Typography>
 

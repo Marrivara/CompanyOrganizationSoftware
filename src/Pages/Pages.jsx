@@ -12,8 +12,6 @@ import { Alert, Snackbar } from "@mui/material";
 
 export const LanguageContext = React.createContext();
 
-
-
 function Pages() {
 
     const languages = { tr, en }
@@ -54,8 +52,8 @@ function Pages() {
                     <Route path="/users" element={signedIn ? <Users setSnackbarState={setSnackbarState} changeLanguage={changeLanguage} setSignedIn={setSignedIn} /> : <Navigate to="/" replace />} />
                     <Route path="forgotPassword" element={<ForgotPassword setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
                     <Route path="activateAccount" element={<ActivateAccount setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
-                    <Route path="setNewPassword" element={<SetNewPassword type={"verifyActivationEmailToken"} setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
-                    <Route path="resetPassword" element={<SetNewPassword type={"verifyResetPasswordToken"} setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
+                    <Route path="setNewPassword/:token" element={<SetNewPassword type={"verifyActivationEmailToken"} setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
+                    <Route path="resetPassword/:token" element={<SetNewPassword type={"verifyResetPasswordToken"} setSnackbarState={setSnackbarState} changeLanguage={changeLanguage}/>} />
                 </Routes>
             </BrowserRouter>
         </LanguageContext.Provider>

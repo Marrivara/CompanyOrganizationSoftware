@@ -3,12 +3,10 @@ import TopBar from '../../Components/TopBar/TopBar'
 import { Box, Container, Typography } from '@mui/material'
 import { LanguageContext } from '../Pages';
 import LocalStorageDelete from '../../Resources/LocalStorageFunctions';
-import { useNavigate } from 'react-router-dom';
 
-const HomePage = ({ changeLanguage, signedIn, setSignedIn, setSnackbarState }) => {
+const HomePage = ({ changeLanguage, signedIn, setSignedIn}) => {
+
     const language = React.useContext(LanguageContext);
-
-    const navigate = useNavigate()
 
     const name = localStorage.getItem("name")
     const surname = localStorage.getItem("surname")

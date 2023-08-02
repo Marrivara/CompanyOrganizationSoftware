@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LanguageContext } from '../../Pages/Pages';
+
 export default function DeleteAlert({ open, handleClose}) {
 
     const language = React.useContext(LanguageContext)

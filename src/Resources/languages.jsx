@@ -1,32 +1,34 @@
 const en = {
     language: "en-EN",
-    signIn: "Sign In",
-    email: "Email Address",
-    password: "Password",
-    forgotPassword: "Forgot Password?",
-    activateAccount: "Activate Account",
-    resetPassword: "Reset Password",
-    sendForgotPassword: "Send Forgot Password Mail",
-    activationLinkSent: "An activation link has been sent",
-    alreadyHaveAccount: "Already have an account?",
-    activateUser: "Activate User",
-    setNewPassword: "Set New Password",
-    send: "Send",
-    emailRequired: "Email is required!",
-    passwordRequired: "Password is required",
-    wrongEmail: "Please enter a valid email address",
+    loginPages: {
+        signIn: "Sign In",
+        email: "Email Address",
+        password: "Password",
+        forgotPassword: "Forgot Password?",
+        activateAccount: "Activate Account",
+        resetPassword: "Reset Password",
+        sendForgotPassword: "Send Forgot Password Mail",
+        activationLinkSent: "An activation link has been sent",
+        alreadyHaveAccount: "Already have an account?",
+        activateUser: "Activate User",
+        setNewPassword: "Set New Password",
+        send: "Send",
+        emailRequired: "Email is required!",
+        passwordRequired: "Password is required",
+        wrongEmail: "Please enter a valid email address",
+    },
     asc: "Ascendemt",
     desc: "Descendent",
-    userAttributes:{
-        name:"Name",
+    userAttributes: {
+        name: "Name",
         surname: "Surname",
         email: "Email",
         company: "Company",
-        department:"Department",
+        department: "Department",
         role: "Role",
         date: "Date"
     },
-    snackbarMessages:{
+    snackbarMessages: {
         userDeleted: "User Deleted",
         deletedError: "Error while deleting the user!",
         getRoleAndCompError: "Error while getting companies and roles!",
@@ -39,7 +41,7 @@ const en = {
         unauthorized: "Unauthorized",
         getUsersBadRequest: "Couldn't get the users!",
         getUsersNotFound: "Couldn't find any user!",
-        serverProblem :"Server Problem",
+        serverProblem: "Server Problem",
         emailNotExists: "Email Doesn't Exists",
         userAlreadyActivated: "User Already Activated",
         linkSent: "A link has been sent",
@@ -48,7 +50,7 @@ const en = {
         loginError: "Email or password is wrong"
 
     },
-    passwordValidation:{
+    passwordValidation: {
         length: "Password length should be between 8 and 32.",
         upperCase: "Password should contain uppercase letter!",
         digit: "Password should contains numbers!",
@@ -56,7 +58,7 @@ const en = {
         lowerCase: "Password should contains lowercase letters!",
         space: "Password cannot contain spaces"
     },
-    homePage:{
+    homePage: {
         search: "Search",
         rowsPerPage: "Rows Per Page:",
         sortBy: "SortBy",
@@ -82,19 +84,19 @@ const en = {
         cancel: "Cancel",
         submit: "Submit"
     },
-    strengthBar:{
+    strengthBar: {
         notValid: "Not Valid",
         weak: "Weak",
         good: "Good",
         strong: "Strong"
     },
-    deleteAlert:{
+    deleteAlert: {
         deleteTheUser: "Delete The User?",
         text: "Are you sure you want to delete this user?",
         cancel: "Cancel",
         yes: "Yes",
     },
-    openableDrawer:{
+    openableDrawer: {
         homePage: "HomePage",
         users: "Users"
     }
@@ -103,33 +105,35 @@ const en = {
 
 const tr = {
     language: "tr-TR",
-    signIn: "Giriş Yap",
-    email: "E-posta Adresi",
-    password: "Şifre",
-    forgotPassword: "Şifreni mi unuttun?",
-    activateAccount: "Hesabını Aktive Et",
-    resetPassword: "Şifre Yenile",
-    sendForgotPassword: "Şifremi Unuttum Maili Gönder",
-    activationLinkSent: "Aktivasyon linki gönderildi",
-    alreadyHaveAccount: "Hesabın zaten var mı?",
-    activateUser: "Kullanıcıyı aktive et",
-    setNewPassword: "Yeni Şifreyi Gir",
-    send: "Gönder",
-    emailRequired: "Eposta boş kalamaz",
-    passwordRequired: "Şifre boş kalamaz",
-    wrongEmail: "Geçerli bir eposta adresi girin",
+    loginPages: {
+        signIn: "Giriş Yap",
+        email: "E-posta Adresi",
+        password: "Şifre",
+        forgotPassword: "Şifreni mi unuttun?",
+        activateAccount: "Hesabını Aktive Et",
+        resetPassword: "Şifre Yenile",
+        sendForgotPassword: "Şifremi Unuttum Maili Gönder",
+        activationLinkSent: "Aktivasyon linki gönderildi",
+        alreadyHaveAccount: "Hesabın zaten var mı?",
+        activateUser: "Kullanıcıyı aktive et",
+        setNewPassword: "Yeni Şifreyi Gir",
+        send: "Gönder",
+        emailRequired: "Eposta boş kalamaz",
+        passwordRequired: "Şifre boş kalamaz",
+        wrongEmail: "Geçerli bir eposta adresi girin",
+    },
     asc: "Artan",
-    desc:"Azalan",
-    userAttributes:{
-        name:"İsim",
+    desc: "Azalan",
+    userAttributes: {
+        name: "İsim",
         surname: "Soyisim",
         email: "Eposta",
         company: "Şirket",
-        department:"Departman",
+        department: "Departman",
         role: "Rol",
         date: "Tarih",
     },
-    snackbarMessages:{
+    snackbarMessages: {
         userDeleted: "Kullanıcı Silindi",
         deletedError: "Kullanıcıyı silerken bir hata oluştu.",
         getRoleAndCompError: "Rol ve Şirketleri alırken bir hata oluştu",
@@ -142,7 +146,7 @@ const tr = {
         unauthorized: "İzin Verilmedi",
         getUsersBadRequest: "Herhangi bir kullanıcı getirilemedi!",
         getUsersNotFound: "Herhangi bir kullanıcı bulunamadı!",
-        serverProblem :"Sunucu Hatası",
+        serverProblem: "Sunucu Hatası",
         emailNotExists: "Böyle bir e-posta bulunamadı",
         userAlreadyActivated: "Kullanıcı zaten aktif",
         linkSent: "Link e-posta adresine gönderildi",
@@ -151,7 +155,7 @@ const tr = {
         loginError: "E-posta ya da şifre yanlış"
 
     },
-    passwordValidation:{
+    passwordValidation: {
         length: "Şifrenin uzunluğu 8 ile 32 arasında olmalıdır.",
         upperCase: "Şifre büyük karakter içermelidir.",
         digit: "Şifre bir sayı içermelidir.",
@@ -159,7 +163,7 @@ const tr = {
         lowerCase: "Şifre küçük harf içermelidir.",
         space: "Şifre boşluk içeremez"
     },
-    homePage:{
+    homePage: {
         search: "Ara",
         rowsPerPage: "Sayfa Başına Satır Sayısı:",
         sortBy: "Alan",
@@ -185,19 +189,19 @@ const tr = {
         cancel: "Vazgeç",
         submit: "Gönder"
     },
-    strengthBar:{
+    strengthBar: {
         notValid: "Geçerli Değil",
         weak: "Zayıf",
         good: "İyi",
         strong: "Güçlü"
     },
-    deleteAlert:{
+    deleteAlert: {
         deleteTheUser: "Kullancı Silinsin mi",
         text: "Bu kullanıcıyı silmek istediğinize emin misiniz?",
         cancel: "Vazgeç",
         yes: "Evet",
     },
-    openableDrawer:{
+    openableDrawer: {
         homePage: "Anasayfa",
         users: "Kullanıcılar"
     }

@@ -11,7 +11,7 @@ const EmailInput = ({control, language, defaultValue, variant}) => {
         name="email"
         control={control}
         defaultValue={defaultValue}
-        rules={{ required: language.emailRequired , minLength:4, pattern: {value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: language.wrongEmail}}}
+        rules={{ required: language.loginPages.emailRequired , minLength:4, pattern: {value:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: language.wrongEmail}}}
         render={({ field, fieldState }) => (
           <TextField
             margin='normal'
@@ -20,7 +20,7 @@ const EmailInput = ({control, language, defaultValue, variant}) => {
             autoFocus
             id='email'
             name='email'
-            label={language.email}
+            label={language.loginPages.email}
             fullWidth
             variant={variant}
             error={!!fieldState.error}

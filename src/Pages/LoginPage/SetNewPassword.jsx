@@ -1,5 +1,5 @@
-import { Alert, Box, Container, Snackbar, Typography } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Container, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { LanguageContext } from "../Pages";
 import NewPasswordInput from "../../Components/InputFields/NewPasswordInput";
@@ -9,9 +9,7 @@ import ChangeLanguageButton from "../../Components/TopBar/ChangeLanguageButton";
 
 function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
+    const { token } = useParams()
 
     const language = React.useContext(LanguageContext);
 
@@ -19,21 +17,13 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
 
     const [isLinkValid, setValid] = useState(false);
 
-    const [message, setMessage] = useState("")
-
-
     const verifyLink = async () => {
         await axios.post(url + '/auth/' + type + "?token=" + token)
             .then((response) => {
-
                 //continue to site
                 setValid(true)
-                setMessage("Token is Valid")
-                //console.log(response)
 
             }).catch((error) => {
-                setMessage("Wrong token")
-
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "Token is not valid",
@@ -44,33 +34,24 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
     }
 
     useEffect(() => {
-
         verifyLink()
-
     }, [])
 
     const handleFormSubmit = async (data) => {
 
         if (isLinkValid) {
             await axios.post(url + '/auth/setNewPassword', {
-
                 token: token,
                 password: data
-
             }).then((response) => {
 
-                console.log(response)
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "New Password Is Set",
                     severity: "success"
                 })
-                setMessage("Password has changed")
                 navigate("/")
-
             }).catch((error) => {
-                setMessage("Password didnt change")
-                console.error(error)
                 setSnackbarState({
                     snackbarOpen: true,
                     snackbarMessage: "Error Occured",
@@ -78,7 +59,6 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
                 })
                 navigate("/")
             })
-            localStorage.removeItem("passwordToken")
         }
     }
 
@@ -108,7 +88,7 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
                             py: 1,
                             px: 1,
                         }}>
-                            <Typography variant="h3" >{language.setNewPassword}</Typography>
+                            <Typography variant="h3" >{language.loginPages.setNewPassword}</Typography>
                         </Box>
                         <Box component="form" noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
                             <NewPasswordInput onInputChange={handleFormSubmit} />

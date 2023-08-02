@@ -19,6 +19,9 @@ import NormalInput from '../InputFields/NormalInput';
 
 
 export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarState }) {
+    
+    const language = React.useContext(LanguageContext)
+    
     const [open, setOpen] = useState(false);
     const [loaded, setLoaded] = useState(false)
     const [name, setName] = useState(isEdit ? user.name : "");
@@ -41,20 +44,16 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
         getCompaniesAndRoles()
         if (isEdit) {
             getDepartments(user.company.id)
-            setRole(user.role)
-            setCompany(user.company)
-            setDepartment(user.department)
         }
         setLoaded(true)
     };
 
 
     useEffect(() => {
-        if (open) {
-            if ((company != "") & !isEdit) {
-                getDepartments(company.id)
-            }
+        if ((company != "")) {
+            getDepartments(company.id)
         }
+
 
     }, [company])
 
@@ -94,8 +93,6 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
 
     };
 
-    const language = React.useContext(LanguageContext)
-
     const createUser = async (data) => {
 
         await axios.post(url + "/users/create", {
@@ -131,6 +128,7 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
             })
         })
     }
+
     const updateUser = async (data) => {
 
         await axios.put(url + "/users/" + user.id, {
@@ -152,7 +150,7 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
                 snackbarMessage: language.snackbarMessages.userUpdated,
                 severity: "success"
             })
-            
+
         }).catch((error) => {
             setSnackbarState({
                 snackbarOpen: true,
@@ -160,11 +158,10 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
                 severity: "error"
             })
         })
-
     }
 
     const onSubmit = (data) => {
-        
+
         if (isEdit) {
             updateUser(data)
         } else {
@@ -185,11 +182,6 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
         const selectedDepartment = departments.find(x => x.id === event.target.value);
         setDepartment(selectedDepartment);
     };
-
-    const checkIfInputsValid = () => {
-
-    }
-
 
     const handleClose = () => {
         setOpen(false);

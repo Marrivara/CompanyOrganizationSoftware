@@ -84,20 +84,19 @@ function ForgotPassword({ changeLanguage, setSnackbarState }) {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h3" >{language.resetPassword}</Typography>
+                    <Typography variant="h3" >{language.loginPages.resetPassword}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}
                 >
                     <EmailInput control={control} language={language} />
 
-
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        {language.sendForgotPassword}
+                        {language.loginPages.sendForgotPassword}
                     </Button>
                     <Typography variant="body2" mt={1}>
-                        {language.alreadyHaveAccount}{' '}
+                        {language.loginPages.alreadyHaveAccount}{' '}
                         <Link href="/">
-                            {language.signIn}
+                            {language.loginPages.signIn}
                         </Link>
                     </Typography>
 

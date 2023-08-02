@@ -107,7 +107,7 @@ const NewPasswordInput = ({ onInputChange}) => {
                 id='password'
                 focused
                 required
-                label={language.password}
+                label={language.loginPages.password}
                 fullWidth
                 type={showPassword ? 'text' : 'password'}
                 defaultValue={password}

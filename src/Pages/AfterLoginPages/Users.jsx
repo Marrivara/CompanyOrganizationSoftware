@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { url } from '../../Resources/Url'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { Box, Button, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
+import { Box, Container, IconButton, MenuItem, Skeleton, Stack, TablePagination, TextField, } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import FormDialog from '../../Components/OpenableComponents/FormDialog'
 import { LanguageContext } from '../Pages'
@@ -106,7 +105,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                 let message = ""
                 switch (error.response.status) {
                     case 401:
-                        message = language.snackbarMessages.unathorized
+                        message = language.snackbarMessages.unauthorized
                         LocalStorageDelete()
                         setSignedIn(false)
                         break;
@@ -160,7 +159,6 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
         <TopBar changeLanguage={changeLanguage} setSignedIn={setSignedIn} />
         <Container maxWidth='lg'>
 
-
             <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="flex-end" spacing={{ xs: 1, md: 5, lg: 12 }}>
                 <Box display={"flex"}>
                     <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={keyword} onChange={handleSearchChange} />
@@ -201,7 +199,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
                     ))}
                 </TextField>
 
-                {localStorage.getItem("role") == "Admin" ? <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} /> : <></>}
+                <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
             </Stack>
 
             {loaded ? (

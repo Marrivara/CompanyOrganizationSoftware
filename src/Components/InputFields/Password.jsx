@@ -17,14 +17,14 @@ const Password = ({ control, language }) => {
       name="password"
       control={control}
       defaultValue=""
-      rules={{ required: language.passwordRequired }}
+      rules={{ required: language.loginPages.passwordRequired }}
       render={({ field, fieldState }) => (
         <TextField
           margin='normal'
           color='primary'
           id='password'
           required
-          label={language.password}
+          label={language.loginPages.password}
           fullWidth
           type={showPassword ? 'text' : 'password'}
           error={!!fieldState.error}

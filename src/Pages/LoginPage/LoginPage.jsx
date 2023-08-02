@@ -24,8 +24,6 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
         setBackdropOpen(true);
     };
 
-    const navigate = useNavigate()
-
     const { handleSubmit, control } = useForm();
 
     const onSubmit = async (data) => {
@@ -35,7 +33,6 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
                 email: data.email,
                 password: data.password
             }).then((response) =>{
-                //Might store the id's of the objects****
                 localStorage.setItem("userId", response.data.data.user.id)
                 localStorage.setItem("userToken", response.data.data.accessToken)
                 localStorage.setItem("name", response.data.data.user.name)
@@ -44,6 +41,7 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
                 localStorage.setItem("email", response.data.data.user.email)
                 localStorage.setItem("department", response.data.data.user.department.name)
                 localStorage.setItem("company", response.data.data.user.company.name)
+
                 setSignedIn(true)
                 setLoginError(false)
                 setSnackbarState({
@@ -51,7 +49,6 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
                     snackbarMessage: language.snackbarMessages.loginSuccessful,
                     severity: "success"
                 })
-
             }).catch((error) =>{
                 setSnackbarState({
                     snackbarOpen: true,
@@ -89,7 +86,7 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
                     py: 1,
                     px: 1,
                 }}>
-                    <Typography variant="h2" >{language.signIn}</Typography>
+                    <Typography variant="h2" >{language.loginPages.signIn}</Typography>
                 </Box>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
 
@@ -98,11 +95,11 @@ function LoginPage({ changeLanguage, setSignedIn, setSnackbarState }) {
 
                     {loginError && <Typography mt={1} variant="body2" color={'error'}>Email or password is wrong</Typography>}
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }}>
-                        {language.signIn}
+                        {language.loginPages.signIn}
                     </Button>
                     <Stack direction={"row"} justifyContent={"space-between"} mt={2}>
-                        <Link href="/ForgotPassword" variant="body2">{language.forgotPassword}</Link>
-                        <Link href="/ActivateAccount" variant="body2">{language.activateAccount}</Link>
+                        <Link href="/ForgotPassword" variant="body2">{language.loginPages.forgotPassword}</Link>
+                        <Link href="/ActivateAccount" variant="body2">{language.loginPages.activateAccount}</Link>
                     </Stack>
                 </Box>
             </Box>

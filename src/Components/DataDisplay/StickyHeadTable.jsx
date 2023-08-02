@@ -102,7 +102,6 @@ export default function StickyHeadTable({ users, onUsersChange, setSnackbarState
                 snackbarMessage: language.snackbarMessages.deletedError,
                 severity: "error"
             })
-            console.log(error)
         })
     }
 
