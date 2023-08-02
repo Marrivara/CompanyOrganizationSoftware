@@ -90,9 +90,8 @@ function SetNewPassword({ changeLanguage, type, setSnackbarState }) {
                         }}>
                             <Typography variant="h3" >{language.loginPages.setNewPassword}</Typography>
                         </Box>
-                        <Box component="form" noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
-                            <NewPasswordInput onInputChange={handleFormSubmit} />
-                        </Box>
+                        
+                        <NewPasswordInput onInputChange={handleFormSubmit} />
                     </Box>
 
                 </Container>

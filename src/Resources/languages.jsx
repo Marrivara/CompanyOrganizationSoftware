@@ -17,7 +17,7 @@ const en = {
         passwordRequired: "Password is required",
         wrongEmail: "Please enter a valid email address",
     },
-    asc: "Ascendemt",
+    asc: "Ascendent",
     desc: "Descendent",
     userAttributes: {
         name: "Name",

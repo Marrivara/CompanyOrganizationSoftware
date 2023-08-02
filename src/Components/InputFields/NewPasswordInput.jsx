@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, IconButton, InputAdornment, TextField, Box} from '@mui/material'
+import { Button, IconButton, InputAdornment, TextField, Box } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PasswordValidation from './PasswordValidation';
 import StrengthBar from './StrengthBar';
 import { LanguageContext } from '../../Pages/Pages';
 
-const NewPasswordInput = ({ onInputChange}) => {
+const NewPasswordInput = ({ onInputChange }) => {
 
     const language = React.useContext(LanguageContext)
 
@@ -101,38 +101,39 @@ const NewPasswordInput = ({ onInputChange}) => {
 
     return (
         <>
-            <TextField
-                margin="dense"
-                color={inputColor}
-                id='password'
-                focused
-                required
-                label={language.loginPages.password}
-                fullWidth
-                type={showPassword ? 'text' : 'password'}
-                defaultValue={password}
-                onChange={handleChange}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton onClick={toggleShowPassword} edge="end">
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '90%' }} justifyContent={'center'}>
+                <TextField
+                    margin="dense"
+                    color={inputColor}
+                    id='password'
+                    focused
+                    required
+                    label={language.loginPages.password}
+                    fullWidth
+                    type={showPassword ? 'text' : 'password'}
+                    defaultValue={password}
+                    onChange={handleChange}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={toggleShowPassword} edge="end">
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
 
-            <StrengthBar strength={passwordStrength} />
+                <StrengthBar strength={passwordStrength} />
 
-            <Box bgcolor={'#cccccc'} borderRadius={2} display={'flex'} alignItems={'start'}>
-                <PasswordValidation validations={validations} />
+                <Box bgcolor={'#cccccc'} borderRadius={2} display={'flex'} alignItems={'start'}>
+                    <PasswordValidation validations={validations} />
+                </Box>
+
+                <Button type='submit' fullWidth variant="contained" sx={{ mt: 3 }}>
+                    {language.loginPages.send}
+                </Button>
             </Box>
-
-            <Button onClick={handleSubmit} fullWidth variant="contained" sx={{ mt: 3 }}>
-                {language.send}
-            </Button>
-
         </>
     )
 }

@@ -65,7 +65,7 @@ const HomePage = ({ changeLanguage, signedIn, setSignedIn}) => {
                             {language.userAttributes.department} : {department}
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            {language.userAttributes.role}: {role}
+                            {language.userAttributes.role} : {role}
                         </Typography>
 
 
