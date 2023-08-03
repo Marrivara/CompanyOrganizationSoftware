@@ -28,7 +28,10 @@ function ActivateAccount({ changeLanguage, setSnackbarState }) {
 
         await axios.post(url + '/auth/activateAccount', {
             email: data.email,
-
+        },{
+            headers:{
+                'Accept-Language' : language.language
+            }
         }).then((response) => {
 
             setSnackbarState({

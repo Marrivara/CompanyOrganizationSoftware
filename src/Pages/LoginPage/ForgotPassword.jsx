@@ -26,7 +26,10 @@ function ForgotPassword({ changeLanguage, setSnackbarState }) {
         openBackdrop()
         await axios.post(url + '/auth/forgotPassword', {
             email: data.email,
-
+        },{
+            headers:{
+                'Accept-Language':language.language
+            }
         }).then((response) => {
             if (response.status == "200") {
                 setSnackbarState({
