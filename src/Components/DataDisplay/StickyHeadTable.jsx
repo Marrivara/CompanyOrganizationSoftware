@@ -24,6 +24,7 @@ export default function StickyHeadTable({ users, onUsersChange, setSnackbarState
 
 
     const columns = [
+        { id: 'id', label: "Id" ,type: "id", minWidth: 50 },
         { id: 'name', label: language.userAttributes.name , minWidth: 130 },
         { id: 'surname', label: language.userAttributes.surname, minWidth: 130 },
         {

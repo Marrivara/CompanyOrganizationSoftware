@@ -8,6 +8,8 @@ import { LanguageContext } from '../Pages'
 import TopBar from '../../Components/TopBar/TopBar'
 import StickyHeadTable from '../../Components/DataDisplay/StickyHeadTable'
 import LocalStorageDelete from '../../Resources/LocalStorageFunctions'
+import FilterListIcon from '@mui/icons-material/FilterList';
+import FiltersForm from '../../Components/OpenableComponents/FiltersForm';
 
 const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
 
@@ -48,43 +50,18 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
     }, [sort, order, pageNumber, pageSize])
 
 
-    const sortFields = [
-        {
-            value: 'id',
-            label: language.userAttributes.date,
-        },
-        {
-            value: 'name',
-            label: language.userAttributes.name,
-        },
-        {
-            value: 'surname',
-            label: language.userAttributes.surname,
-        },
-        {
-            value: 'department',
-            label: language.userAttributes.department,
-        },
-
-    ];
-    const sortOrders = [
-        {
-            value: 'asc',
-            label: language.asc,
-        },
-        {
-            value: 'desc',
-            label: language.desc,
-        },
-    ];
+    const [filters, setFilters] = useState({
+        company: null,
+        department: null,
+    })
 
     const params = {
         keyword: keyword,
         pageSize: pageSize,
         pageNumber: pageNumber,
-        sort: sort,
-        order: order
-
+        /*companyId: filters.company == null ? null : filters.company.id,
+        departmentId: filters.department == null ? null : filters.department.id
+*/
     };
 
     const getUsers = () => {
@@ -160,45 +137,15 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
         <Container maxWidth='lg'>
 
             <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="flex-end" spacing={{ xs: 1, md: 5, lg: 12 }}>
+            <FiltersForm onUsersChange={getUsers} setSnackbarState={setSnackbarState} company={filters.company} setFilters={setFilters} department={filters.department}/>
+                
                 <Box display={"flex"}>
                     <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={keyword} onChange={handleSearchChange} />
                     <IconButton type='submit'>
                         <SearchIcon />
                     </IconButton>
                 </Box>
-                <TextField
-                    id="sortByField"
-                    select
-                    label={language.homePage.sortBy}
-                    defaultValue="id"
-                    variant="outlined"
-                    size='small'
-                    value={sortFields.label}
-                    onChange={handleSortFieldChange}
-                >
-                    {sortFields.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    id="sortByOrder"
-                    select
-                    label={language.homePage.sortOrder}
-                    defaultValue="asc"
-                    variant="outlined"
-                    size='small'
-                    value={sortOrders.label}
-                    onChange={handleSortOrderChange}
-                >
-                    {sortOrders.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-
+               
                 <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
             </Stack>
 
