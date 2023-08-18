@@ -73,7 +73,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
         let urlParams = new URLSearchParams(params);
         let keysForDel = [];
         urlParams.forEach((value, key) => {
-            if (value == 'null') {
+            if (value == 'null' || value == 'undefined') {
                 keysForDel.push(key);
             }
         });
@@ -81,6 +81,7 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
             urlParams.delete(key);
         });
 
+        console.log(urlParams.toString())
         axios.get(url + "/users/all?" + urlParams.toString(),
             {
                 headers: {
