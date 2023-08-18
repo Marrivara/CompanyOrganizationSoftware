@@ -10,6 +10,7 @@ import StickyHeadTable from '../../Components/DataDisplay/StickyHeadTable'
 import LocalStorageDelete from '../../Resources/LocalStorageFunctions'
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FiltersForm from '../../Components/OpenableComponents/FiltersForm';
+import DataTable from '../../Components/DataDisplay/DataTable';
 
 const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
 
@@ -54,18 +55,33 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
         company: null,
         department: null,
     })
+    useEffect(() =>{
+        getUsers()
+    }, [filters])
 
     const params = {
         keyword: keyword,
         pageSize: pageSize,
         pageNumber: pageNumber,
-        /*companyId: filters.company == null ? null : filters.company.id,
+        companyId: filters.company == null ? null : filters.company.id,
         departmentId: filters.department == null ? null : filters.department.id
-*/
+
     };
 
     const getUsers = () => {
-        axios.get(url + "/users/all?" + new URLSearchParams(params).toString(),
+        //Delete the null values from parameters
+        let urlParams = new URLSearchParams(params);
+        let keysForDel = [];
+        urlParams.forEach((value, key) => {
+            if (value == 'null') {
+                keysForDel.push(key);
+            }
+        });
+        keysForDel.forEach(key => {
+            urlParams.delete(key);
+        });
+
+        axios.get(url + "/users/all?" + urlParams.toString(),
             {
                 headers: {
                     'Authorization': localStorage.getItem("userToken"),
@@ -80,13 +96,14 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
             })
             .catch((error) => {
                 let message = ""
+                console.log(error)
                 switch (error.response.status) {
                     case 401:
                         message = language.snackbarMessages.unauthorized
                         LocalStorageDelete()
                         setSignedIn(false)
                         break;
-                        
+
                     case 400:
                         message = language.snackbarMessages.getUsersBadRequest
                         setLength(0)
@@ -136,22 +153,24 @@ const Users = ({ changeLanguage, setSignedIn, setSnackbarState }) => {
         <TopBar changeLanguage={changeLanguage} setSignedIn={setSignedIn} />
         <Container maxWidth='lg'>
 
-            <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="flex-end" spacing={{ xs: 1, md: 5, lg: 12 }}>
-            <FiltersForm onUsersChange={getUsers} setSnackbarState={setSnackbarState} company={filters.company} setFilters={setFilters} department={filters.department}/>
+            <Stack component="form" onSubmit={handleSubmit} direction="row" alignItems={'center'} justifyContent="space-between" marginBottom={1}>
+                <FiltersForm onUsersChange={getUsers} setSnackbarState={setSnackbarState} company={filters.company} setFilters={setFilters} department={filters.department} />
                 
-                <Box display={"flex"}>
+                <Box display={'flex'} flexDirection={"row"} >
                     <TextField id="outlined-search" label={language.homePage.search} type="search" size='small' value={keyword} onChange={handleSearchChange} />
                     <IconButton type='submit'>
                         <SearchIcon />
                     </IconButton>
+                    <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
                 </Box>
-               
-                <FormDialog isEdit={false} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
+
+                
             </Stack>
 
             {loaded ? (
                 <>
-                    <StickyHeadTable users={users} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />
+                    <DataTable users={users} onUsersChange={getUsers} setSnackbarState={setSnackbarState}/>
+                    {/*<StickyHeadTable users={users} onUsersChange={getUsers} setSnackbarState={setSnackbarState} />*/}
                     <Box display={'flex'} justifyContent={'center'}>
                         <TablePagination
                             component="div"

@@ -87,13 +87,16 @@ export default function FiltersForm({ onUsersChange, setSnackbarState,companyFro
 
     const clearAllFilters = async () => {
         setFilters({company:null,department:null})
+        onUsersChange()
+        setOpen(false)
     }
 
     const onSubmit = (data) => {
         
         setFilters({company:company,department:department})
-
+        onUsersChange()
         setOpen(false);
+        
     };
 
     const handleCompanyChange = (event) => {
@@ -119,7 +122,7 @@ export default function FiltersForm({ onUsersChange, setSnackbarState,companyFro
             
                 <IconButton onClick={handleClickOpen} style={editButtonStyle}>
                     <FilterListIcon/>
-                </IconButton> :
+                </IconButton>
                 
             
             <Box component={'form'}>
@@ -169,6 +172,7 @@ export default function FiltersForm({ onUsersChange, setSnackbarState,companyFro
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>{language.formDialog.cancel}</Button>
+                        <Button onClick={clearAllFilters}>Clear Filters</Button>
                         <Button onClick={handleSubmit(onSubmit)}>{language.formDialog.submit}</Button>
                     </DialogActions>
                 </Dialog>

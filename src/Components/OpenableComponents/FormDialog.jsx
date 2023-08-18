@@ -36,6 +36,7 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
 
     const [department, setDepartment] = useState(isEdit ? user.department : "");
     const [departments, setDepartments] = useState([]);
+    const [disabled, setDisabled] = useState(true)
 
     const { handleSubmit, control } = useForm();
 
@@ -83,6 +84,7 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
             }
         }).then((response) => {
             setDepartments(response.data.data);
+            setDisabled(false)
         }).catch((error) => {
             setSnackbarState({
                 snackbarOpen: true,
@@ -94,7 +96,6 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
     };
 
     const createUser = async (data) => {
-        console.log(data.role.id)
 
         await axios.post(url + "/users/create", {
             name: data.name,
@@ -254,6 +255,7 @@ export default function FormDialog({ isEdit, user, onUsersChange, setSnackbarSta
                             select
                             label={language.formDialog.department}
                             fullWidth
+                            disabled={disabled}
                             variant="outlined"
                             defaultValue={loaded ? department.id : ""}
                             size='small'
