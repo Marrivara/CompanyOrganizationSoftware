@@ -136,7 +136,7 @@ export default function DataTable({ users, onUsersChange, setSnackbarState }) {
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        autoPageSize
+        //autoPageSize
         disableColumnMenu
         hideFooter
         disableRowSelectionOnClick
